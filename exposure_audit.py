@@ -369,9 +369,14 @@ class Audit:
     def links(self):
         g = "אמון/תוכן"
         base = f"{urlparse(self.url).scheme}://{urlparse(self.url).netloc}"
+        # נתיבי מערכת (התחברות/חשבון/עגלה) — מוגני-גישה, לא "קישור שבור" ללקוח
+        SKIP = ("/account", "/customer_authentication", "/cart", "/checkout", "/orders",
+                "/challenge", "/password", "/.well-known")
         internal = set()
         for a in self.s.find_all("a", href=True):
             h = a["href"]
+            if any(sk in h for sk in SKIP):
+                continue
             if h.startswith("/") and not h.startswith("//"):
                 internal.add(urljoin(base, h))
             elif h.startswith(base):
@@ -380,9 +385,9 @@ class Audit:
         for u in list(internal)[:30]:
             try:
                 c = requests.head(u, headers=H, timeout=8, allow_redirects=True)
-                if c.status_code >= 400:
-                    # אימות ב-GET (HEAD לפעמים משקר)
-                    if requests.get(u, headers=H, timeout=8).status_code >= 400:
+                # רק 404/410 = שבור אמיתי (401/403/406 = מוגן-גישה, לא שבור)
+                if c.status_code in (404, 410):
+                    if requests.get(u, headers=H, timeout=8).status_code in (404, 410):
                         broken.append(u.replace(base, ""))
             except Exception:
                 pass
