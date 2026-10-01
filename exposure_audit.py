@@ -181,8 +181,10 @@ class Audit:
         for i, (hdr, sev) in enumerate(sh.items(), start=60):
             self.add(i, g, f"כותרת {hdr}", hdr in self.hd, sev)
         self.add(66, g, "HTTPS (לא HTTP)", self.url.startswith("https"), "גבוה")
-        mc = re.findall(r'(?:src|href)=["\']http://', self.html)
-        self.add(67, g, "אין תוכן מעורב (http)", not mc, "בינוני", f"{len(mc)}")
+        # תוכן מעורב = משאבים שנטענים ב-http (src/srcset/link), לא קישורי <a>
+        mc = (re.findall(r'(?:src|srcset)=["\']http://', self.html)
+              + re.findall(r'<link[^>]+href=["\']http://', self.html))
+        self.add(67, g, "אין תוכן מעורב (http)", not mc, "בינוני", f"{len(mc)} משאבים")
         sc = self.hd.get("Set-Cookie", "")
         self.add(68, g, "עוגיות עם Secure", (not sc) or "secure" in sc.lower(), "בינוני")
         self.add(69, g, "עוגיות עם HttpOnly", (not sc) or "httponly" in sc.lower(), "בינוני")
