@@ -300,8 +300,114 @@ class Audit:
         self.add(138, g, "אין שגיאות PHP/stack גלויות", not self.has("fatal error", "stack trace", "undefined index", "warning:"), "גבוה")
         self.add(139, g, "קריאה לפעולה (CTA) בולטת", self.has("קנה", "הוסף לסל", "add to cart", "buy now", "הזמן"), "נמוך")
 
+    # ================= DEEP: POLICY CONTENT =================
+    def policies_deep(self):
+        """קורא את גוף דפי המדיניות עצמם — מגלה תבנית מועתקת, אנגלית בלבד, חוק זר."""
+        g = "משפטי"
+        own = re.sub(r"\.(co\.il|com|net|org).*$", "", self.dom).split(".")[-1].lower()
+        foreign, heb_total, il_law, foreign_law, fetched = set(), 0, False, False, 0
+        for p in ["/policies/privacy-policy", "/policies/terms-of-service",
+                  "/policies/refund-policy", "/policies/shipping-policy"]:
+            try:
+                t = get(urljoin(self.url, p), timeout=12).text
+            except Exception:
+                continue
+            if "<" not in t:
+                continue
+            body = re.sub(r"\s+", " ", BeautifulSoup(t, "lxml").get_text(" ", strip=True))
+            fetched += 1
+            heb_total += len(re.findall(r"[֐-׿]", body))
+            for m in re.findall(r"(?:At|by|operated by|© )\s+([A-Z][A-Za-z]{3,14})\b", body):
+                if m.lower() not in (own, "the", "you", "your", "our", "we", "us", "all", "any", "this", "privacy", "terms", "please"):
+                    foreign.add(m)
+            if re.search(r"הגנת הפרטיות|חוק הגנת|תשמ|עוסק מורשה|הגנת הצרכן", body):
+                il_law = True
+            if re.search(r"\bGDPR\b|\bCCPA\b|California|European Union", body):
+                foreign_law = True
+        if fetched:
+            self.add(16, g, "מדיניות ללא שם עסק זר (תבנית מועתקת)", not foreign, "גבוה", ("נמצא: " + ",".join(list(foreign)[:3])) if foreign else "")
+            self.add(17, g, "מדיניות בעברית", heb_total >= 200, "גבוה", f"{heb_total} תווי עברית בכל הדפים")
+            self.add(18, g, "מדיניות מפנה לחוק הישראלי", il_law, "בינוני", "מפנה רק לחוק זר" if (foreign_law and not il_law) else "")
+
+    # ================= DEEP: CATALOG QUALITY =================
+    def catalog(self):
+        g = "אמון/תוכן"
+        if "shopify" not in self.txt:
+            return
+        try:
+            prods = get(urljoin(self.url, "/products.json?limit=250"), timeout=15).json().get("products", [])
+        except Exception:
+            return
+        if not prods:
+            return
+        no_desc = [p for p in prods if len(re.sub(r"<[^>]+>", "", p.get("body_html", "")).strip()) < 30]
+        no_img = [p for p in prods if not p.get("images")]
+        no_tag = [p for p in prods if not p.get("tags")]
+        zero = [p for p in prods for v in p.get("variants", []) if v.get("price") in ("0.00", "0")]
+        self.add(140, g, "לכל המוצרים יש תיאור", not no_desc, "בינוני", f"{len(no_desc)}/{len(prods)} בלי")
+        self.add(141, g, "לכל המוצרים יש תמונה", not no_img, "גבוה", f"{len(no_img)}/{len(prods)} בלי")
+        self.add(142, g, "למוצרים יש תגיות (סינון/קידום)", len(no_tag) < len(prods) * 0.5, "נמוך", f"{len(no_tag)}/{len(prods)} בלי")
+        self.add(143, g, "אין מוצר במחיר אפס", not zero, "גבוה", f"{len(zero)} מוצרים")
+
+    # ================= DEEP: BROKEN LINKS =================
+    def links(self):
+        g = "אמון/תוכן"
+        base = f"{urlparse(self.url).scheme}://{urlparse(self.url).netloc}"
+        internal = set()
+        for a in self.s.find_all("a", href=True):
+            h = a["href"]
+            if h.startswith("/") and not h.startswith("//"):
+                internal.add(urljoin(base, h))
+            elif h.startswith(base):
+                internal.add(h)
+        broken = []
+        for u in list(internal)[:30]:
+            try:
+                c = requests.head(u, headers=H, timeout=8, allow_redirects=True)
+                if c.status_code >= 400:
+                    # אימות ב-GET (HEAD לפעמים משקר)
+                    if requests.get(u, headers=H, timeout=8).status_code >= 400:
+                        broken.append(u.replace(base, ""))
+            except Exception:
+                pass
+        self.add(144, g, "אין קישורים פנימיים שבורים", not broken, "בינוני", ",".join(broken[:3]))
+
+    # ================= DEEP: EMAIL SENDING DOMAIN =================
+    def email_deep(self):
+        g = "אימייל/DNS"
+        uses_klaviyo = "klaviyo" in self.txt
+        if not uses_klaviyo:
+            self.add(150, g, "דומיין שליחה ייעודי מאומת", True, "נמוך", "לא זוהתה פלטפורמת דיוור")
+            return
+        found = any(doh(f"{s}.{self.dom}", "CNAME") or doh(f"{s}.{self.dom}", "TXT")
+                    for s in ["klaviyo._domainkey", "kl._domainkey", "email", "send"])
+        self.add(150, g, "דומיין שליחה ל-Klaviyo מוגדר", found, "גבוה",
+                 "משתמשים ב-Klaviyo אך ללא דומיין שליחה ייעודי — פגיעה במסירוּת" if not found else "")
+
+    # ================= DEEP: IMAGE WEIGHT =================
+    def images_weight(self):
+        g = "ביצועים"
+        srcs = []
+        for i in self.s.find_all("img"):
+            u = i.get("src") or i.get("data-src") or ""
+            if u.startswith("//"):
+                u = "https:" + u
+            if u.startswith("http"):
+                srcs.append(u)
+        total, heavy = 0, 0
+        for u in srcs[:12]:
+            try:
+                sz = int(requests.head(u, headers=H, timeout=8, allow_redirects=True).headers.get("content-length", 0))
+                total += sz
+                if sz > 250000:
+                    heavy += 1
+            except Exception:
+                pass
+        self.add(123, g, "תמונות דף הבית לא כבדות מדי", heavy == 0 and total < 1500000, "נמוך", f"~{total//1024}KB, {heavy} כבדות")
+
     def run(self):
-        for fn in (self.legal, self.a11y, self.email, self.security, self.seo, self.perf, self.trust):
+        for fn in (self.legal, self.a11y, self.email, self.security, self.seo, self.perf, self.trust,
+                   self.policies_deep, self.catalog, self.links, self.email_deep, self.images_weight):
             try:
                 fn()
             except Exception as e:
