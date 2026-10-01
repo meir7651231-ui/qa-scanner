@@ -1,0 +1,157 @@
+<title>דוח חשיפה לאתר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a professional B2B audit report — scorecard up top, then issues from most to least severe. */
+:root{
+  --bg:#f4f6f8; --panel:#ffffff; --ink:#15212e; --muted:#5a6a78; --line:#e2e8ee;
+  --brand:#14506b; --crit:#c0392b; --warn:#c77d12; --low:#7a8894; --ok:#2e8b57;
+  --critbg:#fbeae8; --warnbg:#fcf3e2; --lowbg:#eef2f5;
+  --font:"Heebo","Segoe UI",system-ui,Arial,sans-serif; --mono:"IBM Plex Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1620; --panel:#15202c; --ink:#e6edf3; --muted:#93a4b3; --line:#243444;
+  --brand:#5bb0d0; --crit:#e5736a; --warn:#e0a94a; --low:#8696a4; --ok:#5cc08a;
+  --critbg:#2a1715; --warnbg:#2a2213; --lowbg:#1a2530; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0e1620; --panel:#15202c; --ink:#e6edf3; --muted:#93a4b3; --line:#243444;
+  --brand:#5bb0d0; --crit:#e5736a; --warn:#e0a94a; --low:#8696a4; --ok:#5cc08a;
+  --critbg:#2a1715; --warnbg:#2a2213; --lowbg:#1a2530; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);direction:rtl;line-height:1.6;font-size:15px}
+.wrap{max-width:820px;margin:0 auto;padding-inline:18px;padding-block:32px 60px;display:grid;gap:30px}
+header{display:grid;gap:10px}
+.eyebrow{font-size:.8rem;letter-spacing:.08em;color:var(--brand);font-weight:700}
+h1{font-size:1.9rem;font-weight:800;margin:0;text-wrap:balance;letter-spacing:-.02em}
+h1 .site{color:var(--brand)}
+.sub{color:var(--muted);font-size:.95rem}
+.score{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.score>div{background:var(--panel);padding:16px 14px;display:grid;gap:3px;min-width:0;text-align:center}
+.score .n{font-size:2rem;font-weight:800;font-family:var(--mono)}
+.score .l{font-size:.78rem;color:var(--muted)}
+.score .crit .n{color:var(--crit)} .score .warn .n{color:var(--warn)} .score .ok .n{color:var(--ok)}
+@media(max-width:540px){.score{grid-template-columns:repeat(2,1fr)}}
+.lead{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;color:var(--muted);font-size:.95rem}
+.lead b{color:var(--ink)}
+h2{font-size:1.15rem;margin:8px 0 0;display:flex;align-items:center;gap:9px}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.issues{display:grid;gap:12px}
+.issue{background:var(--panel);border:1px solid var(--line);border-inline-start:4px solid var(--low);border-radius:11px;padding:14px 16px;display:grid;gap:6px}
+.issue.crit{border-inline-start-color:var(--crit)} .issue.warn{border-inline-start-color:var(--warn)}
+.issue .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.issue .name{font-weight:700;font-size:1.02rem;min-width:0}
+.tag{font-size:.72rem;padding:2px 9px;border-radius:20px;white-space:nowrap;font-weight:500}
+.tag.crit{background:var(--critbg);color:var(--crit)} .tag.warn{background:var(--warnbg);color:var(--warn)} .tag.low{background:var(--lowbg);color:var(--low)}
+.issue .why{color:var(--muted);font-size:.92rem}
+.issue .cat{font-size:.74rem;color:var(--muted)}
+.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;font-size:.85em}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px 16px}
+summary{cursor:pointer;font-weight:600;padding:12px 0}
+.minor{display:grid;gap:7px;padding-bottom:12px}
+.minor div{display:flex;justify-content:space-between;gap:10px;font-size:.9rem;color:var(--muted);border-top:1px solid var(--line);padding-top:7px}
+footer{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.84rem;display:grid;gap:7px}
+.cta{background:var(--brand);color:#fff;border-radius:12px;padding:18px 20px;display:grid;gap:6px}
+:root[data-theme="dark"] .cta,:root:not([data-theme="light"]) .cta{color:#0e1620}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cta{color:#0e1620}}
+.cta b{font-size:1.05rem}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">דוח חשיפה · בדיקת אתר</div>
+    <h1>מה שאולי לא ידעת על <span class="site" id="site">u-boutique.com</span></h1>
+    <div class="sub" id="meta">נבדקו 106 נקודות · <span id="date"></span></div>
+  </header>
+
+  <section class="score" aria-label="סיכום">
+    <div class="crit"><span class="n" id="nCrit">0</span><span class="l">חמור</span></div>
+    <div class="warn"><span class="n" id="nWarn">0</span><span class="l">בינוני</span></div>
+    <div><span class="n" id="nLow">0</span><span class="l">קל</span></div>
+    <div class="ok"><span class="n" id="nOk">0</span><span class="l">תקין</span></div>
+  </section>
+
+  <div class="lead">
+    הבדיקה עברה על <b>106 נקודות</b> באתר, בתחומים של חוק ונגישות, אבטחה, דיוור, נראות בגוגל וביצועים.
+    הדוח מסודר <b>מהבעיה החמורה ביותר לקלה ביותר</b>. כל פריט כולל הסבר קצר למה הוא חשוב.
+    הבדיקה בוצעה על עמודים ציבוריים בלבד, כפי שכל גולש רואה.
+  </div>
+
+  <section>
+    <h2><span class="dot" style="background:var(--crit)"></span>בעיות חמורות — כדאי לטפל קודם</h2>
+    <div class="issues" id="critList"></div>
+  </section>
+
+  <section>
+    <h2><span class="dot" style="background:var(--warn)"></span>בעיות בינוניות</h2>
+    <div class="issues" id="warnList"></div>
+  </section>
+
+  <details>
+    <summary id="lowSummary">בעיות קלות ושיפורים</summary>
+    <div class="minor" id="lowList"></div>
+  </details>
+
+  <div class="cta">
+    <b>רוצים לתקן את זה?</b>
+    <span>אפשר לעבור על הרשימה יחד, לפי סדר העדיפויות, ולסגור קודם את הדברים החמורים. כל אחד מהם ניתן לתיקון.</span>
+  </div>
+
+  <footer>
+    <p>הדוח מבוסס על בדיקה אוטומטית של עמודים ונתונים ציבוריים. חלק מהפריטים כדאי לאמת ידנית בדף עצמו.</p>
+    <p>אין בדוח ניסיון לפגוע או לאיים — מטרתו להצביע על נקודות לשיפור ולהגנה על העסק.</p>
+  </footer>
+</div>
+
+<script>
+const SEV={ "גבוה":{k:"crit",t:"חמור"}, "בינוני":{k:"warn",t:"בינוני"}, "נמוך":{k:"low",t:"קל"} };
+// הסברים בשפת בעל העסק לכל בדיקה
+const WHY={
+ "הצהרת נגישות (תקן 5568)":"החוק בישראל מחייב הצהרת נגישות. היעדרה חושף אותך לתביעה של עד 50,000 ₪ — גם בלי שהוכח נזק.",
+ "ווידג'ט נגישות מותקן":"כלי ההנגשה הבסיסי שכמעט כל אתר תקין מתקין. היעדרו הוא הסימן הראשון שבודקים בתביעת נגישות.",
+ "קישור למדיניות פרטיות":"אתר שאוסף פרטים חייב מדיניות פרטיות. היעדרה היא חשיפה לחוק הגנת הפרטיות.",
+ "מעקב רק אחרי הסכמה":"Google Analytics רץ עוד לפני שהמבקר אישר עוגיות — חשיפה לחוק הפרטיות ול-GDPR.",
+ "טקסט חלופי לכל התמונות":"תמונות בלי תיאור חלופי אינן נגישות לקוראי מסך, וגם פוגעות בדירוג בגוגל.",
+ "תווית נגישה לכל שדה טופס":"שדות טופס בלי תווית מונעים ממשתמשים עם מוגבלות למלא טופס — הפרת נגישות.",
+ "SPF (מניעת זיוף)":"בלי רשומת SPF, כל אחד יכול לשלוח אימייל שנראה כאילו הוא מהעסק שלך. פרצת הונאה.",
+ "DMARC קיים":"בלי DMARC, המיילים שהעסק שולח (אישורי הזמנה, חשבוניות) נוטים ליפול לספאם של הלקוחות.",
+ "כותרת Strict-Transport-Security":"כותרת אבטחה שמכריחה חיבור מוצפן. היעדרה מותיר פתח להתקפות ביניים.",
+ "כותרת Content-Security-Policy":"הגנה מרכזית מפני הזרקת קוד זדוני לאתר. חסרה כאן.",
+ "jQuery לא פגיע":"האתר טוען ספריית jQuery ישנה (1.12.4, מ-2016) עם פרצות אבטחה ידועות ומתועדות.",
+ "אין קוד תבנית שדלף ({{ }})":"נמצא קוד תבנית גולמי שמוצג למבקר במקום טקסט — תקלת תצוגה גלויה.",
+ "מדיניות החזרות / ביטול":"חנות מקוונת מחויבת להציג מדיניות החזרות וביטול עסקה לפי חוק הגנת הצרכן.",
+ "מדיניות עוגיות":"חסר דף שמסביר אילו עוגיות האתר משתמש בהן.",
+ "כותרת ראשית H1":"אין כותרת ראשית בעמוד — גוגל מתקשה להבין על מה העמוד.",
+ "לכל קישור טקסט נגיש":"57 קישורים בלי טקסט נגיש — בעיה גדולה לקוראי מסך ולנגישות.",
+ "אפשרות הגדלת טקסט":"האתר מונע ממשתמשים להגדיל טקסט במובייל — הפרת נגישות.",
+ "DMARC באכיפה (לא p=none)":"גם אם יש DMARC, הוא לא במצב אכיפה, כך שההגנה חלקית.",
+ "אין תוכן מעורב (http)":"משאב אחד נטען ב-HTTP לא מאובטח על דף מאובטח — גורם לאזהרה בדפדפן.",
+ "עוגיות עם Secure":"עוגיות בלי סימון Secure עלולות להישלח בחיבור לא מוצפן.",
+ "meta description קיים":"אין תיאור לגוגל — גוגל ימציא טקסט אקראי מתחת לכותרת בתוצאות החיפוש.",
+ "תגית canonical":"בלי canonical, גוגל עלול לראות עמודים כפולים ולפגוע בדירוג.",
+ "Structured Data (schema)":"אין נתונים מובנים — המוצרים לא יופיעו עם מחיר וכוכבים בתוצאות גוגל.",
+ "sitemap.xml קיים":"אין מפת אתר — גוגל סורק פחות עמודים.",
+ "משקל HTML סביר (<150KB)":"עמוד הבית כבד (271KB), מה שמאט את הטעינה במיוחד במובייל."
+};
+const DATA=[{"id": 1, "group": "משפטי", "name": "הצהרת נגישות (תקן 5568)", "ok": false, "sev": "גבוה", "note": ""}, {"id": 2, "group": "משפטי", "name": "ווידג'ט נגישות מותקן", "ok": false, "sev": "גבוה", "note": ""}, {"id": 3, "group": "משפטי", "name": "קישור למדיניות פרטיות", "ok": false, "sev": "גבוה", "note": ""}, {"id": 4, "group": "משפטי", "name": "תקנון / תנאי שימוש", "ok": true, "sev": "בינוני", "note": ""}, {"id": 5, "group": "משפטי", "name": "מדיניות החזרות / ביטול", "ok": false, "sev": "בינוני", "note": ""}, {"id": 6, "group": "משפטי", "name": "מדיניות עוגיות", "ok": false, "sev": "בינוני", "note": ""}, {"id": 7, "group": "משפטי", "name": "באנר הסכמת עוגיות", "ok": true, "sev": "בינוני", "note": ""}, {"id": 8, "group": "משפטי", "name": "מעקב רק אחרי הסכמה", "ok": false, "sev": "גבוה", "note": "googletagmanager,google-analytics,gtag(,"}, {"id": 9, "group": "משפטי", "name": "פרטי יצירת קשר (טלפון)", "ok": true, "sev": "נמוך", "note": ""}, {"id": 10, "group": "משפטי", "name": "כתובת / פרטי עוסק", "ok": true, "sev": "נמוך", "note": ""}, {"id": 11, "group": "משפטי", "name": "דף 'אודות'", "ok": true, "sev": "נמוך", "note": ""}, {"id": 12, "group": "משפטי", "name": "דף יצירת קשר", "ok": true, "sev": "נמוך", "note": ""}, {"id": 13, "group": "משפטי", "name": "קישור להסרה מרשימת תפוצה", "ok": true, "sev": "נמוך", "note": "נבדק רק במייל"}, {"id": 14, "group": "משפטי", "name": "אזהרת גיל / תוכן (אם רלוונטי)", "ok": true, "sev": "נמוך", "note": "ידני"}, {"id": 15, "group": "משפטי", "name": "סימון מחיר כולל מע\"מ", "ok": false, "sev": "נמוך", "note": ""}, {"id": 20, "group": "נגישות", "name": "טקסט חלופי לכל התמונות", "ok": false, "sev": "גבוה", "note": "4/92 בלי alt"}, {"id": 21, "group": "נגישות", "name": "הגדרת שפה (lang)", "ok": true, "sev": "גבוה", "note": ""}, {"id": 22, "group": "נגישות", "name": "כותרת ראשית H1", "ok": false, "sev": "בינוני", "note": ""}, {"id": 23, "group": "נגישות", "name": "יותר מ-H1 אחד (בעיה)", "ok": true, "sev": "נמוך", "note": "0 H1"}, {"id": 24, "group": "נגישות", "name": "סדר כותרות היררכי", "ok": true, "sev": "נמוך", "note": ""}, {"id": 25, "group": "נגישות", "name": "תווית נגישה לכל שדה טופס", "ok": false, "sev": "גבוה", "note": "2/3 בלי"}, {"id": 26, "group": "נגישות", "name": "לכל קישור טקסט נגיש", "ok": false, "sev": "בינוני", "note": "57 ריקים"}, {"id": 27, "group": "נגישות", "name": "לכל כפתור טקסט נגיש", "ok": true, "sev": "בינוני", "note": "0 ריקים"}, {"id": 28, "group": "נגישות", "name": "קישור 'דלג לתוכן'", "ok": true, "sev": "נמוך", "note": ""}, {"id": 29, "group": "נגישות", "name": "ציוני דרך (landmarks/ARIA)", "ok": true, "sev": "נמוך", "note": ""}, {"id": 30, "group": "נגישות", "name": "כותרת (title) ל-iframe", "ok": false, "sev": "נמוך", "note": "5 iframes"}, {"id": 31, "group": "נגישות", "name": "ל-video כתוביות (track)", "ok": true, "sev": "נמוך", "note": ""}, {"id": 32, "group": "נגישות", "name": "לטבלאות כותרות (th)", "ok": false, "sev": "נמוך", "note": ""}, {"id": 33, "group": "נגישות", "name": "אין ids כפולים", "ok": false, "sev": "נמוך", "note": ""}, {"id": 34, "group": "נגישות", "name": "כותרת לעמוד (title)", "ok": true, "sev": "בינוני", "note": ""}, {"id": 35, "group": "נגישות", "name": "viewport למובייל", "ok": true, "sev": "בינוני", "note": ""}, {"id": 36, "group": "נגישות", "name": "אין text בתמונה בלבד (לוגו alt)", "ok": true, "sev": "נמוך", "note": "ידני"}, {"id": 37, "group": "נגישות", "name": "ניגודיות צבעים", "ok": true, "sev": "נמוך", "note": "דורש בדיקה חזותית"}, {"id": 38, "group": "נגישות", "name": "אפשרות הגדלת טקסט", "ok": false, "sev": "בינוני", "note": ""}, {"id": 39, "group": "נגישות", "name": "autoplay מושתק/מבוטל", "ok": false, "sev": "נמוך", "note": ""}, {"id": 50, "group": "אימייל/DNS", "name": "SPF (מניעת זיוף)", "ok": false, "sev": "גבוה", "note": ""}, {"id": 51, "group": "אימייל/DNS", "name": "DMARC קיים", "ok": false, "sev": "גבוה", "note": ""}, {"id": 52, "group": "אימייל/DNS", "name": "DMARC באכיפה (לא p=none)", "ok": false, "sev": "בינוני", "note": ""}, {"id": 53, "group": "אימייל/DNS", "name": "רשומת MX (קבלת מייל)", "ok": true, "sev": "בינוני", "note": ""}, {"id": 54, "group": "אימייל/DNS", "name": "DKIM (חתימת מייל)", "ok": true, "sev": "נמוך", "note": "דורש בורר ידוע"}, {"id": 55, "group": "אימייל/DNS", "name": "DNSSEC", "ok": false, "sev": "נמוך", "note": ""}, {"id": 56, "group": "אימייל/DNS", "name": "CAA (הגנה על תעודות)", "ok": false, "sev": "נמוך", "note": ""}, {"id": 57, "group": "אימייל/DNS", "name": "אימייל לא חשוף לסורקי ספאם", "ok": true, "sev": "נמוך", "note": ""}, {"id": 58, "group": "אימייל/DNS", "name": "אין www+root מפוצלים ב-DNS", "ok": true, "sev": "נמוך", "note": ""}, {"id": 59, "group": "אימייל/DNS", "name": "TTL סביר", "ok": true, "sev": "נמוך", "note": ""}, {"id": 60, "group": "אבטחה", "name": "כותרת Strict-Transport-Security", "ok": false, "sev": "גבוה", "note": ""}, {"id": 61, "group": "אבטחה", "name": "כותרת Content-Security-Policy", "ok": false, "sev": "גבוה", "note": ""}, {"id": 62, "group": "אבטחה", "name": "כותרת X-Content-Type-Options", "ok": true, "sev": "בינוני", "note": ""}, {"id": 63, "group": "אבטחה", "name": "כותרת X-Frame-Options", "ok": true, "sev": "בינוני", "note": ""}, {"id": 64, "group": "אבטחה", "name": "כותרת Referrer-Policy", "ok": false, "sev": "נמוך", "note": ""}, {"id": 65, "group": "אבטחה", "name": "כותרת Permissions-Policy", "ok": false, "sev": "נמוך", "note": ""}, {"id": 66, "group": "אבטחה", "name": "HTTPS (לא HTTP)", "ok": true, "sev": "גבוה", "note": ""}, {"id": 67, "group": "אבטחה", "name": "אין תוכן מעורב (http)", "ok": false, "sev": "בינוני", "note": "1"}, {"id": 68, "group": "אבטחה", "name": "עוגיות עם Secure", "ok": false, "sev": "בינוני", "note": ""}, {"id": 69, "group": "אבטחה", "name": "עוגיות עם HttpOnly", "ok": true, "sev": "בינוני", "note": ""}, {"id": 70, "group": "אבטחה", "name": "לא חושף גרסת שרת", "ok": true, "sev": "נמוך", "note": "cloudflare"}, {"id": 71, "group": "אבטחה", "name": "אין X-Powered-By", "ok": true, "sev": "נמוך", "note": ""}, {"id": 72, "group": "אבטחה", "name": "jQuery לא פגיע", "ok": false, "sev": "גבוה", "note": "1.12.4"}, {"id": 73, "group": "אבטחה", "name": "תעודת SSL בתוקף (>14 יום)", "ok": true, "sev": "גבוה", "note": "29 ימים"}, {"id": 74, "group": "אבטחה", "name": "אין קבצים רגישים חשופים", "ok": true, "sev": "גבוה", "note": ""}, {"id": 75, "group": "אבטחה", "name": "פאנל /admin לא פתוח", "ok": true, "sev": "בינוני", "note": "status 301"}, {"id": 76, "group": "אבטחה", "name": "פאנל /wp-admin לא פתוח", "ok": true, "sev": "בינוני", "note": "status 404"}, {"id": 77, "group": "אבטחה", "name": "פאנל /phpmyadmin לא פתוח", "ok": true, "sev": "בינוני", "note": "status 404"}, {"id": 80, "group": "SEO", "name": "לא חסום מגוגל (noindex)", "ok": true, "sev": "גבוה", "note": ""}, {"id": 81, "group": "SEO", "name": "כותרת title קיימת", "ok": true, "sev": "בינוני", "note": ""}, {"id": 82, "group": "SEO", "name": "אורך title תקין (10-65)", "ok": true, "sev": "נמוך", "note": "56"}, {"id": 83, "group": "SEO", "name": "meta description קיים", "ok": false, "sev": "בינוני", "note": ""}, {"id": 84, "group": "SEO", "name": "אורך description תקין (50-160)", "ok": false, "sev": "נמוך", "note": "0"}, {"id": 85, "group": "SEO", "name": "תגית canonical", "ok": false, "sev": "בינוני", "note": ""}, {"id": 86, "group": "SEO", "name": "Open Graph (og:title)", "ok": true, "sev": "נמוך", "note": ""}, {"id": 87, "group": "SEO", "name": "og:image", "ok": true, "sev": "נמוך", "note": ""}, {"id": 88, "group": "SEO", "name": "Twitter Card", "ok": false, "sev": "נמוך", "note": ""}, {"id": 89, "group": "SEO", "name": "Structured Data (schema)", "ok": false, "sev": "בינוני", "note": ""}, {"id": 90, "group": "SEO", "name": "sitemap.xml קיים", "ok": false, "sev": "בינוני", "note": ""}, {"id": 91, "group": "SEO", "name": "robots.txt קיים", "ok": true, "sev": "נמוך", "note": ""}, {"id": 92, "group": "SEO", "name": "Sitemap מוזכר ב-robots", "ok": false, "sev": "נמוך", "note": ""}, {"id": 93, "group": "SEO", "name": "robots לא חוסם הכל", "ok": true, "sev": "גבוה", "note": ""}, {"id": 94, "group": "SEO", "name": "hreflang (רב-לשוני)", "ok": false, "sev": "נמוך", "note": ""}, {"id": 95, "group": "SEO", "name": "favicon", "ok": true, "sev": "נמוך", "note": ""}, {"id": 96, "group": "SEO", "name": "הפניה עקבית www/root", "ok": false, "sev": "נמוך", "note": "200"}, {"id": 97, "group": "SEO", "name": "עמוד 404 תקין (לא soft-404)", "ok": true, "sev": "בינוני", "note": "404"}, {"id": 98, "group": "SEO", "name": "breadcrumbs", "ok": false, "sev": "נמוך", "note": ""}, {"id": 99, "group": "SEO", "name": "אין פרמטרים כפולים ב-URL", "ok": true, "sev": "נמוך", "note": ""}, {"id": 110, "group": "ביצועים", "name": "משקל HTML סביר (<150KB)", "ok": false, "sev": "בינוני", "note": "271KB"}, {"id": 111, "group": "ביצועים", "name": "דחיסה (gzip/br)", "ok": true, "sev": "בינוני", "note": "gzip"}, {"id": 112, "group": "ביצועים", "name": "טעינה עצלה לתמונות (lazy)", "ok": false, "sev": "נמוך", "note": ""}, {"id": 113, "group": "ביצועים", "name": "תמונות בפורמט מודרני (WebP/AVIF)", "ok": false, "sev": "נמוך", "note": ""}, {"id": 114, "group": "ביצועים", "name": "קאשינג (Cache-Control)", "ok": false, "sev": "נמוך", "note": ""}, {"id": 115, "group": "ביצועים", "name": "מעט קבצי JS (<20)", "ok": true, "sev": "נמוך", "note": "19"}, {"id": 116, "group": "ביצועים", "name": "מעט קבצי CSS (<10)", "ok": false, "sev": "נמוך", "note": "17"}, {"id": 117, "group": "ביצועים", "name": "JS עם async/defer", "ok": false, "sev": "נמוך", "note": ""}, {"id": 118, "group": "ביצועים", "name": "אין @import ב-CSS", "ok": true, "sev": "נמוך", "note": ""}, {"id": 119, "group": "ביצועים", "name": "preconnect/dns-prefetch", "ok": false, "sev": "נמוך", "note": ""}, {"id": 120, "group": "ביצועים", "name": "לתמונות מידות (מונע קפיצות)", "ok": false, "sev": "נמוך", "note": "90/92"}, {"id": 121, "group": "ביצועים", "name": "HTTP/2 או HTTP/3", "ok": false, "sev": "נמוך", "note": ""}, {"id": 122, "group": "ביצועים", "name": "אין redirect chains", "ok": true, "sev": "נמוך", "note": "0 הפניות"}, {"id": 130, "group": "אמון/תוכן", "name": "שנה עדכנית בפוטר", "ok": true, "sev": "נמוך", "note": "2075"}, {"id": 131, "group": "אמון/תוכן", "name": "קישורי רשתות חברתיות", "ok": true, "sev": "נמוך", "note": ""}, {"id": 132, "group": "אמון/תוכן", "name": "חותם אבטחה/תשלום", "ok": true, "sev": "נמוך", "note": ""}, {"id": 133, "group": "אמון/תוכן", "name": "ביקורות/דירוגים", "ok": true, "sev": "נמוך", "note": ""}, {"id": 134, "group": "אמון/תוכן", "name": "חיפוש באתר", "ok": true, "sev": "נמוך", "note": ""}, {"id": 135, "group": "אמון/תוכן", "name": "טקסט זמני שלא נמחק", "ok": true, "sev": "בינוני", "note": ""}, {"id": 136, "group": "אמון/תוכן", "name": "אין קוד תבנית שדלף ({{ }})", "ok": false, "sev": "גבוה", "note": ""}, {"id": 137, "group": "אמון/תוכן", "name": "דף הבית נטען מהר (<3s)", "ok": true, "sev": "בינוני", "note": "1.3s"}, {"id": 138, "group": "אמון/תוכן", "name": "אין שגיאות PHP/stack גלויות", "ok": true, "sev": "גבוה", "note": ""}, {"id": 139, "group": "אמון/תוכן", "name": "קריאה לפעולה (CTA) בולטת", "ok": true, "sev": "נמוך", "note": ""}];
+const bySev={crit:[],warn:[],low:[]};
+let ok=0;
+for(const f of DATA){ if(f.ok){ok++;continue;} const s=SEV[f.sev]||SEV["נמוך"]; bySev[s.k].push(f); }
+document.getElementById("nCrit").textContent=bySev.crit.length;
+document.getElementById("nWarn").textContent=bySev.warn.length;
+document.getElementById("nLow").textContent=bySev.low.length;
+document.getElementById("nOk").textContent=ok;
+document.getElementById("date").textContent=new Date().toLocaleDateString("he-IL");
+function card(f){
+  const s=SEV[f.sev]; const why=WHY[f.name]||("נמצאה בעיה: "+f.name+(f.note?" ("+f.note+")":""));
+  const el=document.createElement("div"); el.className="issue "+s.k;
+  el.innerHTML=`<div class="top"><span class="name">${f.name}</span><span class="tag ${s.k}">${s.t}</span></div>
+    <div class="why">${why}</div>
+    <div class="cat">${f.group}${f.note?` · <span class="mono">${f.note}</span>`:""}</div>`;
+  return el;
+}
+bySev.crit.forEach(f=>critList.appendChild(card(f)));
+bySev.warn.forEach(f=>warnList.appendChild(card(f)));
+document.getElementById("lowSummary").textContent=`בעיות קלות ושיפורים (${bySev.low.length})`;
+bySev.low.forEach(f=>{const d=document.createElement("div");d.innerHTML=`<span>${f.name}</span><span class="mono">${f.group}</span>`;lowList.appendChild(d);});
+</script>
