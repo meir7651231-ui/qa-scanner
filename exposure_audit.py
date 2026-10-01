@@ -373,7 +373,7 @@ class Audit:
         base = f"{urlparse(self.url).scheme}://{urlparse(self.url).netloc}"
         # נתיבי מערכת (התחברות/חשבון/עגלה) — מוגני-גישה, לא "קישור שבור" ללקוח
         SKIP = ("/account", "/customer_authentication", "/cart", "/checkout", "/orders",
-                "/challenge", "/password", "/.well-known")
+                "/challenge", "/password", "/.well-known", "/cdn-cgi/", "mailto:", "tel:")
         internal = set()
         for a in self.s.find_all("a", href=True):
             h = a["href"]
