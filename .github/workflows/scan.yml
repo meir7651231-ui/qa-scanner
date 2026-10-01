@@ -1,6 +1,8 @@
 # מריץ את סורק האיכות על רשימת אתרים (sites.txt) מהשרתים של GitHub - אינטרנט רגיל, בלי פרוקסי.
 name: qa-scan
 on:
+  push:
+    branches: [main]
   workflow_dispatch:        # כפתור "Run workflow" - הרצה ידנית, גם מהאפליקציה בטלפון
   # schedule:
   #   - cron: "0 6 * * 1"   # אפשר להפעיל ריצה שבועית אוטומטית
