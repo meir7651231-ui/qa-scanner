@@ -2,3 +2,6 @@ __pycache__/
 reports/
 .venv/
 *.zip
+# דוחות חשיפה על אתרים ספציפיים - לא לפרסם בריפו ציבורי
+*.pdf
+*_findings.json
