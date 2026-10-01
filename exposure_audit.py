@@ -1,6 +1,7 @@
 """דוח חשיפה לעסק - 100+ בדיקות על אתר, מקובצות לפי תחום.
 קורא עמודים ונתונים ציבוריים בלבד (HTML, כותרות HTTP, DNS). לא מבצע שום פעולה.
 """
+import glob
 import re
 import socket
 import ssl
@@ -29,16 +30,63 @@ def get(u, **k):
     return requests.get(u, **k)
 
 
+def _find_chrome():
+    for pat in ("/opt/pw-browsers/chromium-*/chrome-linux/chrome",
+                "/opt/pw-browsers/chromium*/chrome-linux*/chrome"):
+        hits = sorted(glob.glob(pat))
+        if hits:
+            return hits[-1]
+    return None
+
+
+def render_html(url, wait_ms=2500):
+    """מחזיר את ה-DOM אחרי שה-JavaScript רץ (מה שגולש אמיתי רואה).
+    נחוץ כי ווידג'טים (נגישות, עוגיות) מוזרקים ב-JS ולא קיימים ב-HTML הגולמי.
+    מחזיר None אם הדפדפן לא זמין / נכשל — ואז נופלים בחזרה ל-HTML הגולמי.
+    """
+    chrome = _find_chrome()
+    if not chrome:
+        return None
+    try:
+        from playwright.sync_api import sync_playwright
+    except Exception:
+        return None
+    try:
+        with sync_playwright() as p:
+            b = p.chromium.launch(executable_path=chrome, args=["--no-sandbox"])
+            ctx = b.new_context(ignore_https_errors=True,
+                                user_agent="Mozilla/5.0 (Windows NT 10.0) ExposureAudit/1.0")
+            pg = ctx.new_page()
+            pg.goto(url, wait_until="domcontentloaded", timeout=35000)
+            try:
+                pg.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass
+            pg.wait_for_timeout(wait_ms)   # זמן לווידג'טים מושהים להיטען
+            content = pg.content()
+            b.close()
+            return content
+    except Exception:
+        return None
+
+
 class Audit:
-    def __init__(self, url):
+    def __init__(self, url, render=True):
         self.url = url if url.startswith("http") else "https://" + url
         self.host = urlparse(self.url).hostname
         self.dom = re.sub(r"^www\.", "", self.host)
         self.F = []  # (id, group, name, passed, severity, note)
         r = get(self.url)
-        self.r, self.html, self.hd = r, r.text, r.headers
-        self.txt = r.text.lower()
-        self.s = BeautifulSoup(r.text, "lxml")
+        self.r, self.hd = r, r.headers        # כותרות/סטטוס תמיד מ-requests (אמין)
+        self.rendered = False
+        html = r.text
+        if render:
+            rendered = render_html(self.url)
+            if rendered:
+                html, self.rendered = rendered, True
+        self.html = html                      # DOM מרונדר אם הצליח, אחרת גולמי
+        self.txt = html.lower()
+        self.s = BeautifulSoup(html, "lxml")
 
     def add(self, gid, group, name, passed, sev="בינוני", note=""):
         self.F.append((gid, group, name, bool(passed), sev, note))
@@ -54,7 +102,11 @@ class Audit:
     def legal(self):
         g = "משפטי"
         self.add(1, g, "הצהרת נגישות (תקן 5568)", self.has("הצהרת נגישות") or ("accessibility" in self.txt and "statement" in self.txt), "גבוה")
-        self.add(2, g, "ווידג'ט נגישות מותקן", self.has("nagich", "negishut", "accessibe", "userway", "equalweb", "enable.co.il", "vee.co.il"), "גבוה")
+        self.add(2, g, "ווידג'ט נגישות מותקן", self.has(
+            "nagishli", "nagich", "negishut", "accessibe", "userway", "equalweb",
+            "enable.co.il", "vee.co.il", "pojo-a11y", "aioa-", "acsbapp", "allyable",
+            "hasharon", "vital5", "a11y-widget", "accessibility-widget", "accessibility menu",
+            "תפריט נגישות", "פתח תפריט נגישות", "כלי נגישות", "אתר נגיש"), "גבוה")
         self.add(3, g, "קישור למדיניות פרטיות", self.has("מדיניות פרטיות", "privacy policy", "privacy-policy"), "גבוה")
         self.add(4, g, "תקנון / תנאי שימוש", self.has("תקנון", "תנאי שימוש", "terms", "terms-of-service"), "בינוני")
         self.add(5, g, "מדיניות החזרות / ביטול", self.has("החזר", "ביטול עסקה", "refund", "return policy"), "בינוני")
@@ -278,5 +330,9 @@ def report(url, findings):
 
 if __name__ == "__main__":
     u = sys.argv[1] if len(sys.argv) > 1 else "https://www.u-boutique.com/"
+    no_render = "--no-render" in sys.argv
     print(f"בודק {u} ... (100+ בדיקות, עמודים ציבוריים בלבד)")
-    report(u, Audit(u).run())
+    a = Audit(u, render=not no_render)
+    mode = "דפדפן אמיתי (DOM מרונדר)" if a.rendered else "HTML גולמי (ללא JS)"
+    print(f"מצב קריאה: {mode}")
+    report(u, a.run())
