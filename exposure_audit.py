@@ -242,7 +242,15 @@ class Audit:
             rob = get(urljoin(self.url, "/robots.txt"), timeout=12)
             self.add(91, g, "robots.txt קיים", rob.status_code == 200, "נמוך")
             self.add(92, g, "Sitemap מוזכר ב-robots", "sitemap" in rob.text.lower(), "נמוך")
-            self.add(93, g, "robots לא חוסם הכל", not re.search(r"^\s*Disallow:\s*/\s*$", rob.text, re.M), "גבוה")
+            # חוסם הכל = רק אם מקטע 'User-agent: *' עצמו חוסם /; חסימת בוט ספציפי היא תקינה
+            star, blocks_all = False, False
+            for ln in rob.text.splitlines():
+                l = ln.strip()
+                if l.lower().startswith("user-agent:"):
+                    star = l.split(":", 1)[1].strip() == "*"
+                elif star and re.match(r"disallow:\s*/\s*$", l, re.I):
+                    blocks_all = True
+            self.add(93, g, "robots לא חוסם את כל האתר מגוגל", not blocks_all, "גבוה")
         except Exception:
             pass
         self.add(94, g, "hreflang (רב-לשוני)", "hreflang" in self.txt, "נמוך")
@@ -305,6 +313,11 @@ class Audit:
         """קורא את גוף דפי המדיניות עצמם — מגלה תבנית מועתקת, אנגלית בלבד, חוק זר."""
         g = "משפטי"
         own = re.sub(r"\.(co\.il|com|net|org).*$", "", self.dom).split(".")[-1].lower()
+        # מותגי פלטפורמה/תשלום שמופיעים לגיטימית בכל מדיניות — לא "תבנית מועתקת"
+        EXCLUDE = {own, "the", "you", "your", "our", "we", "us", "all", "any", "this", "please",
+                   "privacy", "terms", "shopify", "klaviyo", "google", "meta", "facebook", "instagram",
+                   "paypal", "visa", "mastercard", "stripe", "amex", "powered", "pci", "dss", "apple",
+                   "wix", "woocommerce", "cloudflare", "mailchimp", "israel", "california", "europe"}
         foreign, heb_total, il_law, foreign_law, fetched = set(), 0, False, False, 0
         for p in ["/policies/privacy-policy", "/policies/terms-of-service",
                   "/policies/refund-policy", "/policies/shipping-policy"]:
@@ -317,8 +330,11 @@ class Audit:
             body = re.sub(r"\s+", " ", BeautifulSoup(t, "lxml").get_text(" ", strip=True))
             fetched += 1
             heb_total += len(re.findall(r"[֐-׿]", body))
-            for m in re.findall(r"(?:At|by|operated by|© )\s+([A-Z][A-Za-z]{3,14})\b", body):
-                if m.lower() not in (own, "the", "you", "your", "our", "we", "us", "all", "any", "this", "privacy", "terms", "please"):
+            # איתות חזק ומדויק: פתיח תבנית "At X, we value/are..." + "operated by X"
+            cand = set(re.findall(r"\bAt\s+([A-Z][A-Za-z]{2,14})\s*,\s*we\b", body))
+            cand |= set(re.findall(r"operated by\s+([A-Z][A-Za-z]{2,14})\b", body))
+            for m in cand:
+                if m.lower() not in EXCLUDE:
                     foreign.add(m)
             if re.search(r"הגנת הפרטיות|חוק הגנת|תשמ|עוסק מורשה|הגנת הצרכן", body):
                 il_law = True
