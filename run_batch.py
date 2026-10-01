@@ -88,17 +88,24 @@ def scan_site(page, url):
         n_el = c.query_selector("a[title], .product-item-link, h2 a, h3 a, [class*='name'] a")
         name = (n_el.inner_text().strip()[:40] if n_el else "")
         has_buy = bool(c.query_selector("button, [class*='cart' i], [class*='add' i]"))
-        clean = re.sub(r"\d+\s*(?:reviews?|ביקורות)", "", text, flags=re.I)
-        ps = nums(clean)
+        # קוראים מחירים רק מרכיבי מחיר ייעודיים, לא מכל טקסט הכרטיס (נמנע מ-$0.00 ליד דירוג וכו')
+        price_els = c.query_selector_all("[class*='price' i]:not([class*='old' i]):not([class*='regular' i]):not([class*='was' i]):not([class*='compare' i])")
+        if price_els:
+            ptext = " ".join(e.inner_text() for e in price_els)
+        else:  # אין רכיב מחיר מסומן - לא מנחשים מכל הכרטיס
+            ptext = ""
+        clean = re.sub(r"\d+\s*(?:reviews?|ביקורות)", "", ptext, flags=re.I)
+        ps = [p for p in nums(clean) if p > 0]
+        zero_el = c.query_selector("[class*='price' i]:not([class*='old' i]):not([class*='was' i]):not([class*='compare' i]):not([class*='regular' i])")
+        if has_buy and zero_el and re.search(r"(?:₪|\$|€)\s?0(?:\.0+)?(?:\D|$)", zero_el.inner_text()):
+            ps_raw = nums(zero_el.inner_text())
+            if ps_raw and max(ps_raw) == 0:  # רכיב המחיר הראשי עצמו הוא 0
+                f.append(("גבוה", "מחיר אפס", f'"{name}" - מחיר המוצר הראשי הוא 0.'))
         for p in ps:
-            if p == 0:
-                f.append(("גבוה", "מחיר אפס", f'"{name}" מתומחר ב-0.'))
-            elif 0 < p < 2:
-                f.append(("בינוני", "מחיר נמוך חשוד", f'"{name}" מתומחר ב-{p:g}.'))
+            if 0 < p < 2:
+                f.append(("בינוני", "מחיר נמוך חשוד", f'"{name}" מתומחר ב-{p:g} - אולי חסרה ספרה.'))
         if len(ps) >= 2 and min(ps) > 0 and (1 - min(ps) / max(ps)) >= 0.90:
             f.append(("גבוה", "הנחה קיצונית", f'"{name}": {max(ps):g} -> {min(ps):g} (מעל 90%).'))
-        if has_buy and not re.search(r"\d", clean):
-            f.append(("גבוה", "מוצר בלי מחיר", f'"{name}" ניתן לקנייה בלי מחיר גלוי.'))
     return f, {"title": title, "products_checked": checked}
 
 
