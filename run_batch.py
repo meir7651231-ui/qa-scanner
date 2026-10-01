@@ -84,9 +84,16 @@ def scan_site(page, url):
             text = c.inner_text()
         except Exception:
             continue
-        checked += 1
+        # דלג על כרטיסים שאינם מוצר אמיתי (רשימת משאלות, התחברות, השוואה וכו')
+        link_el = c.query_selector("a[href]")
+        href = (link_el.get_attribute("href") or "") if link_el else ""
+        if re.search(r"/(wishlist|account|login|authenticate|compare|register|cart)(/|$)", href):
+            continue
         n_el = c.query_selector("a[title], .product-item-link, h2 a, h3 a, [class*='name'] a")
         name = (n_el.inner_text().strip()[:40] if n_el else "")
+        if not name:  # כרטיס בלי שם = כנראה שלד/תבנית, לא מוצר אמיתי
+            continue
+        checked += 1
         has_buy = bool(c.query_selector("button, [class*='cart' i], [class*='add' i]"))
         # קוראים מחירים רק מרכיבי מחיר ייעודיים, לא מכל טקסט הכרטיס (נמנע מ-$0.00 ליד דירוג וכו')
         price_els = c.query_selector_all("[class*='price' i]:not([class*='old' i]):not([class*='regular' i]):not([class*='was' i]):not([class*='compare' i])")
