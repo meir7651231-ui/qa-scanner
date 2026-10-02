@@ -216,7 +216,7 @@ async function check(domain){
     html += fix;
     html += `<div class="cta"><h3>לא רוצה להתעסק עם זה?</h3>
       <p>אפשר שנעשה לך את התיקון המלא — מהיר, ושהמיילים שלך יפסיקו ליפול לספאם.</p>
-      <a href="https://example.com/fix" target="_blank" rel="noopener">דברו איתי לתיקון ←</a></div>`;
+      <a href="https://wa.me/972555043749?text=${encodeURIComponent('היי! ראיתי את בדיקת הגנת המייל באתר, ויש לי בעיה ('+domain+'). אשמח שתעזור לי לתקן 🙏')}" target="_blank" rel="noopener">שלח לי הודעה בוואטסאפ לתיקון ←</a></div>`;
   } else {
     html += card('ok','🎉','הכל מוגן','מצוין','הגנת המייל שלך מוגדרת כמו שצריך. כל הכבוד.');
   }
