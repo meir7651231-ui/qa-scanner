@@ -3,5 +3,7 @@
 <url><loc>https://meir7651231-ui.github.io/qa-scanner/</loc><priority>1.0</priority></url>
 <url><loc>https://meir7651231-ui.github.io/qa-scanner/email-spam.html</loc><priority>0.8</priority></url>
 <url><loc>https://meir7651231-ui.github.io/qa-scanner/spf-check.html</loc><priority>0.8</priority></url>
+<url><loc>https://meir7651231-ui.github.io/qa-scanner/dmarc-gmail.html</loc><priority>0.8</priority></url>
+<url><loc>https://meir7651231-ui.github.io/qa-scanner/stop-spoofing.html</loc><priority>0.8</priority></url>
 <url><loc>https://meir7651231-ui.github.io/qa-scanner/shopify-email.html</loc><priority>0.8</priority></url>
 </urlset>

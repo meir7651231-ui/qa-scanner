@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://meir7651231-ui.github.io/qa-scanner/sitemap.xml

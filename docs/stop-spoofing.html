@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>איך לעצור זיוף מייל</title>
+<meta name="description" content="מישהו שולח מיילים בשם העסק שלך? כך עוצרים זיוף מייל (spoofing) עם SPF ו-DMARC — הסבר פשוט ובדיקה חינמית.">
+<link rel="canonical" href="https://meir7651231-ui.github.io/qa-scanner/stop-spoofing.html">
+<meta property="og:title" content="איך לעצור זיוף מייל בשם העסק"><meta property="og:type" content="article">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"איך מישהו שולח מייל בשם שלי?","acceptedAnswer":{"@type":"Answer","text":"אם לדומיין שלך אין SPF ו-DMARC, כל שרת יכול לשלוח מייל עם כתובת השולח שלך בלי אימות. זה נקרא spoofing."}},{"@type":"Question","name":"איך עוצרים זיוף מייל?","acceptedAnswer":{"@type":"Answer","text":"מגדירים SPF ו-DMARC במצב אכיפה (p=quarantine או p=reject) ב-DNS של הדומיין, כך ששרתי דואר ידחו מיילים מזויפים."}}]}</script>
+<style>
+:root{--bg:#f4f6fa;--surface:#fff;--fg:#14202e;--muted:#5e6e80;--line:#e3e9f1;--brand:#0e6ba8;--brand-ink:#0a3a52;--font:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e151e;--surface:#16202c;--fg:#e8eef5;--muted:#9bacbe;--line:#243242;--brand:#3fa0dc;--brand-ink:#9bd2f2;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e151e;--surface:#16202c;--fg:#e8eef5;--muted:#9bacbe;--line:#243242;--brand:#3fa0dc;--brand-ink:#9bd2f2;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7}
+.wrap{max-width:680px;margin:0 auto;padding-block:36px;padding-inline:16px}
+.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;background:color-mix(in srgb,var(--brand) 10%,transparent);padding:1px 6px;border-radius:5px;font-size:.92em}
+.eyebrow{color:var(--brand);font-weight:700;font-size:13px;letter-spacing:.06em}
+h1{font-size:29px;font-weight:800;margin:6px 0 10px;text-wrap:balance;line-height:1.2}
+.lede{font-size:17px;color:var(--muted);margin-bottom:22px}h2{font-size:20px;margin:28px 0 10px}p{margin:0 0 14px}
+.fix{font-family:var(--mono);direction:ltr;background:#0f1b27;color:#d7e3ee;border-radius:8px;padding:10px 12px;font-size:12.5px;overflow-x:auto;word-break:break-all;margin:10px 0}
+.cta{display:block;text-align:center;background:linear-gradient(135deg,var(--brand),var(--brand-ink));color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:16px;border-radius:12px;margin:24px 0}
+footer{margin-top:34px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:12px;text-align:center}a{color:var(--brand)}
+</style>
+</head>
+<body>
+<article class="wrap">
+  <div class="eyebrow">מדריך · זיוף מייל</div>
+  <h1>איך לעצור זיוף מייל בשם העסק שלך</h1>
+  <p class="lede">לקוחות מקבלים מיילים "ממך" שאתה לא שלחת? נוכלים מתחזים לעסק שלך? זה spoofing — וזה קורה כשחסרה הגנת מייל. הנה איך עוצרים את זה.</p>
+  <a class="cta" href="./">בדוק אם הדומיין שלך חשוף לזיוף — חינם ←</a>
+  <h2>איך בכלל אפשר לזייף מייל בשמי?</h2>
+  <p>כתובת השולח במייל היא כמו כתובת שולח על מעטפה — אפשר לכתוב עליה מה שרוצים. היחיד שמונע את זה הוא <b>SPF</b> (מי מורשה לשלוח) ו-<b>DMARC</b> (מה לעשות עם מזויף). בלעדיהם, כל אחד יכול לכתוב <span class="mono">office@yourbusiness.com</span> כשולח, והמייל ייראה אמיתי.</p>
+  <h2>למה זה מסוכן</h2>
+  <p>נוכל יכול לכתוב ללקוחות שלך "שינינו פרטי חשבון בנק, העבירו לכאן", בשמך. הלקוח משלם לנוכל — והאשמה והנזק נופלים עליך. זו הונאה נפוצה שפוגעת דווקא בעסקים קטנים.</p>
+  <h2>איך עוצרים — 2 שלבים</h2>
+  <p>1. SPF שמגדיר מי מורשה. 2. DMARC <b>במצב אכיפה</b> שמורה לדחות מזויפים:</p>
+  <div class="fix">SPF  (TXT @):       v=spf1 include:_spf.google.com ~all
+DMARC (TXT _dmarc):  v=DMARC1; p=reject; rua=mailto:dmarc@yourbusiness.com</div>
+  <p><span class="mono">p=reject</span> הוא ההגדרה החזקה — מיילים מזויפים פשוט נדחים. מומלץ להגיע אליו בהדרגה (none → quarantine → reject).</p>
+  <a class="cta" href="./">בדוק את רמת ההגנה שלך עכשיו ←</a>
+  <footer><a href="./email-spam.html">למה מיילים נופלים לספאם</a> · <a href="./spf-check.html">בדיקת SPF</a> · <a href="./dmarc-gmail.html">DMARC בג'ימייל</a></footer>
+</article>
+</body>
+</html>
