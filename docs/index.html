@@ -4,9 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>בודק הגנת מייל</title>
-<meta name="description" content="בדיקה חינמית תוך 5 שניות: האם המיילים של העסק שלך מוגנים מזיוף ומספאם. בודק SPF, DMARC ו-DKIM.">
+<meta name="description" content="בדיקה חינמית תוך 5 שניות: האם המיילים של העסק שלך מוגנים מזיוף ומספאם. בודק SPF ו-DMARC ונותן לך את התיקון המדויק.">
+<meta property="og:title" content="בודק הגנת מייל — בדיקה חינמית">
+<meta property="og:description" content="גלה ב-5 שניות אם המיילים של העסק שלך חשופים לזיוף ולספאם — וקבל את התיקון המדויק.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"מה זה SPF?","acceptedAnswer":{"@type":"Answer","text":"SPF היא רשומת DNS שקובעת מי מורשה לשלוח דואר אלקטרוני בשם הדומיין שלך. בלעדיה כל אחד יכול לזייף מייל בשמך."}},
+{"@type":"Question","name":"מה זה DMARC?","acceptedAnswer":{"@type":"Answer","text":"DMARC היא שכבת הגנה שמוודאת שמייל שנשלח בשמך הוא באמת ממך, ומנחה את ג'ימייל ואאוטלוק מה לעשות עם מייל מזויף."}},
+{"@type":"Question","name":"למה המיילים שלי נופלים לספאם?","acceptedAnswer":{"@type":"Answer","text":"לרוב בגלל שחסרות רשומות SPF ו-DMARC. מאז 2024 ג'ימייל ו-Yahoo דורשים אותן משולחים עסקיים."}}]}
+</script>
 <style>
-/* layout: עמוד יחיד ממורכז — hero עם תיבת חיפוש, ואז כרטיסי תוצאה */
+/* layout: עמוד נחיתה — hero עם תיבת בדיקה, תוצאות + תיקון מדויק, ואז תוכן SEO */
 :root{
   --bg:#f4f6fa; --surface:#ffffff; --fg:#14202e; --muted:#5e6e80;
   --line:#e3e9f1; --brand:#0e6ba8; --brand-ink:#0a3a52;
@@ -25,8 +34,8 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6}
 .wrap{max-width:720px;margin:0 auto;padding-block:32px;padding-inline:16px}
-.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate}
-header{text-align:center;margin-bottom:24px}
+.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;word-break:break-all}
+header{text-align:center;margin-bottom:22px}
 .badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);padding:4px 12px;border-radius:20px;margin-bottom:14px}
 h1{font-size:28px;font-weight:800;margin:0 0 8px;text-wrap:balance}
 .sub{color:var(--muted);margin:0 auto;max-width:34em}
@@ -38,10 +47,9 @@ button:disabled{opacity:.6;cursor:wait}
 .hint{font-size:12.5px;color:var(--muted);text-align:center}
 #out{margin-top:26px}
 .scorecard{display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px}
-.ring{--v:0;width:92px;height:92px;flex:none;border-radius:50%;display:grid;place-items:center;
-  background:conic-gradient(var(--rc) calc(var(--v)*1%),var(--line) 0);position:relative}
+.ring{--v:0;width:92px;height:92px;flex:none;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--rc) calc(var(--v)*1%),var(--line) 0);position:relative}
 .ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}
-.ring b{position:relative;font-size:26px;font-weight:800}
+.ring b{position:relative;font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
 .verdict b{font-size:19px;display:block}
 .verdict span{color:var(--muted);font-size:14px}
 .card{background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:11px}
@@ -53,9 +61,18 @@ button:disabled{opacity:.6;cursor:wait}
 .tg.bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
 .tg.warn{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
 .card p{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
-.cta{background:linear-gradient(135deg,var(--brand),var(--brand-ink));color:#fff;border-radius:16px;padding:22px;text-align:center;margin-top:20px}
-.cta h3{margin:0 0 6px;font-size:19px} .cta p{margin:0 0 14px;opacity:.9;font-size:14px}
+.fix{background:var(--surface);border:1px dashed var(--brand);border-radius:12px;padding:16px;margin-bottom:11px}
+.fix h4{margin:0 0 8px;font-size:14px;color:var(--brand-ink)}
+.rec{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0}
+.rec .mono{flex:1;font-size:12.5px}
+.rec button{font-size:12px;padding:6px 12px;border-radius:7px}
+.cta{background:linear-gradient(135deg,var(--brand),var(--brand-ink));color:#fff;border-radius:16px;padding:22px;text-align:center;margin-top:16px}
+.cta h3{margin:0 0 6px;font-size:19px} .cta p{margin:0 0 14px;opacity:.92;font-size:14px}
 .cta a{display:inline-block;background:#fff;color:var(--brand-ink);font-weight:800;text-decoration:none;padding:12px 24px;border-radius:10px}
+.content{margin-top:40px;border-top:1px solid var(--line);padding-top:26px}
+.content h2{font-size:20px;margin:22px 0 8px}
+.content h3{font-size:15px;margin:16px 0 4px}
+.content p{color:var(--muted);font-size:14.5px;margin:0 0 10px}
 footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 .spin{display:inline-block;width:16px;height:16px;border:2.5px solid #fff;border-top-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-3px}
 @keyframes s{to{transform:rotate(360deg)}}
@@ -67,7 +84,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
   <header>
     <div class="badge">בדיקה חינמית · 5 שניות</div>
     <h1>האם המיילים של העסק שלך מוגנים?</h1>
-    <p class="sub">כל עסק שולח מיילים — אבל אצל רבים כל אחד יכול לזייף מייל בשמם, והמיילים שלהם נופלים לספאם. בדוק את הדומיין שלך בחינם.</p>
+    <p class="sub">כל עסק שולח מיילים — אבל אצל רבים כל אחד יכול לזייף מייל בשמם, והמיילים שלהם נופלים לספאם. בדוק בחינם, וקבל את התיקון המדויק.</p>
   </header>
 
   <form id="f">
@@ -78,6 +95,17 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 
   <div id="out"></div>
 
+  <section class="content">
+    <h2>מה בודקים כאן?</h2>
+    <p>הכלי בודק את שלוש ההגנות שקובעות אם המיילים של העסק שלך אמינים — SPF, DMARC ו-DKIM — ישירות מרשומות ה-DNS הציבוריות שלך.</p>
+    <h3>מה זה SPF?</h3>
+    <p>רשומה שקובעת מי מורשה לשלוח דואר בשם הדומיין שלך. בלעדיה כל אחד בעולם יכול לשלוח מייל שנראה כאילו הוא ממך — הונאה קלאסית על הלקוחות שלך.</p>
+    <h3>מה זה DMARC?</h3>
+    <p>שכבה שמוודאת שמייל "ממך" הוא באמת ממך, ומנחה את ג'ימייל ואאוטלוק מה לעשות עם מייל מזויף. בלעדיה אין אכיפה.</p>
+    <h3>למה המיילים שלי נופלים לספאם?</h3>
+    <p>מאז 2024 ג'ימייל ו-Yahoo דורשים SPF ו-DMARC משולחים עסקיים. בלעדיהם, אישורי הזמנה, קודי הנחה וניוזלטרים נוחתים בתיבת הספאם — מכירות שאובדות בשקט.</p>
+  </section>
+
   <footer>בודק הגנת מייל · בדיקה אוטומטית של רשומות DNS ציבוריות · נועד לעזור, לא לאסוף מידע</footer>
 </div>
 
@@ -85,7 +113,6 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 const $ = s => document.querySelector(s);
 const out = $('#out');
 
-// שאילתת DNS-over-HTTPS (עובד כשהאתר מתארח על דומיין אמיתי)
 async function dns(name, type){
   try{
     const r = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(name)}&type=${type}`,
@@ -94,73 +121,80 @@ async function dns(name, type){
     return (j.Answer||[]).map(a=>a.data||'');
   }catch(e){ return null; }
 }
-
 function card(kind, icon, name, tag, text){
-  const tg = kind==='ok'?'תקין':kind==='bad'?'חסר':'חלקי';
   return `<div class="card ${kind}"><div class="top"><span class="ic">${icon}</span>
-    <span class="nm">${name}</span><span class="tg ${kind}">${tag||tg}</span></div>
-    <p>${text}</p></div>`;
+    <span class="nm">${name}</span><span class="tg ${kind}">${tag}</span></div><p>${text}</p></div>`;
 }
+// הצעת SPF לפי ספק המייל (מזוהה מ-MX)
+function suggestSPF(mx){
+  const m = mx.join(' ').toLowerCase();
+  if(m.includes('google')) return 'v=spf1 include:_spf.google.com ~all';
+  if(m.includes('outlook')||m.includes('protection.outlook')) return 'v=spf1 include:spf.protection.outlook.com ~all';
+  if(m.includes('zoho')) return 'v=spf1 include:zoho.com ~all';
+  if(m.includes('inbox.co.il')||m.includes('013')||m.includes('netvision')) return 'v=spf1 a mx include:_spf.inbox.co.il ~all';
+  return 'v=spf1 a mx ~all';
+}
+function recRow(label, value){
+  return `<div class="rec"><span class="mono" id="r_${label}">${value}</span>
+    <button type="button" onclick="cp('r_${label}',this)">העתק</button></div>`;
+}
+window.cp = (id,btn)=>{
+  const t = document.getElementById(id).textContent;
+  navigator.clipboard?.writeText(t).then(()=>{btn.textContent='הועתק ✓';setTimeout(()=>btn.textContent='העתק',1500);})
+    .catch(()=>{const r=document.createRange();r.selectNode(document.getElementById(id));getSelection().removeAllRanges();getSelection().addRange(r);});
+};
 
 async function check(domain){
   out.innerHTML = '';
   const txt = await dns(domain,'TXT');
   if(txt===null){
-    out.innerHTML = `<div class="card bad"><div class="top"><span class="ic">⚠️</span>
-      <span class="nm">לא הצלחנו לבדוק</span></div><p>ודא שהכתובת תקינה ושיש חיבור לאינטרנט, ונסה שוב.</p></div>`;
+    out.innerHTML = card('bad','⚠️','לא הצלחנו לבדוק','', 'ודא שהכתובת תקינה ושיש חיבור לאינטרנט, ונסה שוב.');
     return;
   }
   const dmarcArr = (await dns('_dmarc.'+domain,'TXT'))||[];
   const mx = (await dns(domain,'MX'))||[];
-
   const spf = txt.find(t=>t.toLowerCase().includes('v=spf1'));
   const dmarc = dmarcArr.find(t=>t.toUpperCase().includes('DMARC1'));
   const enforced = dmarc && !/p=none/i.test(dmarc);
   const hasMail = mx.length>0;
 
-  let score = 0;
-  score += spf?35:0;
-  score += dmarc?(enforced?45:25):0;
-  score += hasMail?20:20; // תמיד נותנים את ה-20 (לא נקודת כשל)
+  let score = (spf?35:0) + (dmarc?(enforced?45:25):0) + 20;
   score = Math.min(100,score);
-
   const rc = score>=75?'var(--ok)':score>=45?'var(--warn)':'var(--bad)';
   const verdict = score>=75?'הגנה טובה':score>=45?'הגנה חלקית':'חשוף לזיופים';
 
   let html = `<div class="scorecard">
     <div class="ring" style="--v:${score};--rc:${rc}"><b>${score}</b></div>
-    <div class="verdict"><b>${verdict}</b><span>ציון הגנת מייל מתוך 100 · ${domain}</span></div>
-  </div>`;
+    <div class="verdict"><b>${verdict}</b><span>ציון הגנת מייל מתוך 100 · ${domain}</span></div></div>`;
 
-  html += spf
-    ? card('ok','🛡️','SPF — מניעת זיוף','תקין','יש רשומת SPF: מוגדר מי מורשה לשלוח מייל בשם הדומיין.')
-    : card('bad','🛡️','SPF — מניעת זיוף','חסר','אין רשומת SPF. כל אחד יכול לשלוח מייל כאילו מהדומיין שלך, והמיילים שלך נוטים לספאם.');
+  html += spf ? card('ok','🛡️','SPF — מניעת זיוף','תקין','יש רשומת SPF: מוגדר מי מורשה לשלוח מייל בשם הדומיין.')
+              : card('bad','🛡️','SPF — מניעת זיוף','חסר','אין רשומת SPF. כל אחד יכול לשלוח מייל כאילו מהדומיין שלך.');
+  html += !dmarc ? card('bad','📩','DMARC — אכיפת זהות','חסר','אין רשומת DMARC. אין הגנה שמוודאת שמייל "ממך" הוא באמת ממך.')
+    : enforced ? card('ok','📩','DMARC — אכיפת זהות','תקין','יש DMARC במצב אכיפה — זיופים נחסמים.')
+    : card('warn','📩','DMARC — אכיפת זהות','חלקי','יש DMARC אבל במצב ניטור בלבד (p=none): זיופים מזוהים אך לא נחסמים.');
+  html += hasMail ? card('ok','✉️','קבלת מייל (MX)','פעיל',`הדומיין מקבל מיילים (${mx.length} שרתים).`)
+                  : card('warn','✉️','קבלת מייל (MX)','—','לא נמצאו שרתי קבלת מייל.');
 
-  html += !dmarc
-    ? card('bad','📩','DMARC — אכיפת זהות','חסר','אין רשומת DMARC. אין שום הגנה שמוודאת שמייל "ממך" הוא באמת ממך.')
-    : enforced
-      ? card('ok','📩','DMARC — אכיפת זהות','תקין','יש DMARC במצב אכיפה — זיופים נחסמים.')
-      : card('warn','📩','DMARC — אכיפת זהות','חלקי','יש DMARC אבל במצב ניטור בלבד (p=none): זיופים מזוהים אך לא נחסמים.');
-
-  html += hasMail
-    ? card('ok','✉️','קבלת מייל (MX)','פעיל',`הדומיין מקבל מיילים (${mx.length} שרתים). לכן ההגנות למעלה רלוונטיות אליך ישירות.`)
-    : card('warn','✉️','קבלת מייל (MX)','—','לא נמצאו שרתי קבלת מייל לדומיין.');
-
+  // התיקון המדויק — נוצר אוטומטית
   if(!spf || !dmarc || !enforced){
-    html += `<div class="cta">
-      <h3>רוצה לתקן את זה?</h3>
-      <p>תיקון של SPF ו-DMARC לוקח כשעה, ומונע שהמיילים שלך ייפלו לספאם או יזויפו.</p>
-      <a href="https://example.com/fix" target="_blank" rel="noopener">קבל מדריך תיקון מלא ←</a>
-    </div>`;
+    let fix = `<div class="fix"><h4>🔧 התיקון המדויק (הדבק ב-DNS של הדומיין):</h4>`;
+    if(!spf) fix += `<div>רשומת <b>TXT</b> בשם <span class="mono">@</span>:</div>` + recRow('spf', suggestSPF(mx));
+    if(!dmarc) fix += `<div>רשומת <b>TXT</b> בשם <span class="mono">_dmarc</span>:</div>` + recRow('dmarc', `v=DMARC1; p=quarantine; rua=mailto:dmarc@${domain}`);
+    else if(!enforced) fix += `<div>עדכן את רשומת ה-DMARC (שנה p=none ל-p=quarantine):</div>` + recRow('dmarc2', `v=DMARC1; p=quarantine; rua=mailto:dmarc@${domain}`);
+    fix += `<p style="margin-top:8px">מוסיפים ב-DNS אצל חברת האחסון/הרשם. נקלט תוך 24 שעות.</p></div>`;
+    html += fix;
+    html += `<div class="cta"><h3>לא רוצה להתעסק עם זה?</h3>
+      <p>אפשר שנעשה לך את התיקון המלא — מהיר, ושהמיילים שלך יפסיקו ליפול לספאם.</p>
+      <a href="https://example.com/fix" target="_blank" rel="noopener">דברו איתי לתיקון ←</a></div>`;
+  } else {
+    html += card('ok','🎉','הכל מוגן','מצוין','הגנת המייל שלך מוגדרת כמו שצריך. כל הכבוד.');
   }
-
   out.innerHTML = html;
 }
 
 $('#f').addEventListener('submit', async e=>{
   e.preventDefault();
-  let d = $('#dom').value.trim().toLowerCase()
-    .replace(/^https?:\/\//,'').replace(/^www\./,'').replace(/\/.*$/,'');
+  let d = $('#dom').value.trim().toLowerCase().replace(/^https?:\/\//,'').replace(/^www\./,'').replace(/\/.*$/,'');
   if(!d || !d.includes('.')){ $('#dom').focus(); return; }
   const btn = $('#go');
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
