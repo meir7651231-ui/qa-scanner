@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>למה מיילים נופלים לספאם</title>
+<meta name="description" content="המיילים של העסק שלך נופלים לספאם? 3 הסיבות האמיתיות (SPF, DMARC ותוכן) ואיך לתקן כל אחת — מדריך פשוט בעברית, כולל בדיקה חינמית.">
+<link rel="canonical" href="https://meir7651231-ui.github.io/qa-scanner/email-spam.html">
+<meta property="og:title" content="למה המיילים של העסק נופלים לספאם — ואיך מתקנים">
+<meta property="og:description" content="3 הסיבות האמיתיות ואיך לתקן כל אחת. מדריך פשוט בעברית + בדיקה חינמית.">
+<meta property="og:type" content="article">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"למה המיילים של העסק נופלים לספאם ואיך מתקנים","inLanguage":"he",
+"description":"3 הסיבות האמיתיות שמיילים עסקיים נופלים לספאם — SPF, DMARC ותוכן — ואיך לתקן כל אחת.",
+"mainEntityOfPage":"https://meir7651231-ui.github.io/qa-scanner/email-spam.html"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"למה המיילים שלי נופלים לספאם?","acceptedAnswer":{"@type":"Answer","text":"הסיבה הנפוצה ביותר היא שחסרות רשומות SPF ו-DMARC בדומיין. בלעדיהן ג'ימייל ואאוטלוק לא בוטחים במיילים שלך ושולחים אותם לספאם."}},
+{"@type":"Question","name":"איך אני בודק אם יש לי SPF ו-DMARC?","acceptedAnswer":{"@type":"Answer","text":"אפשר לבדוק בחינם תוך 5 שניות בעזרת כלי בדיקת הגנת מייל — מקלידים את הדומיין ומקבלים תוצאה."}},
+{"@type":"Question","name":"כמה זמן לוקח לתקן?","acceptedAnswer":{"@type":"Answer","text":"הוספת רשומות SPF ו-DMARC ב-DNS לוקחת כמה דקות, ונקלטת תוך 24 שעות."}}]}
+</script>
+<style>
+:root{--bg:#f4f6fa;--surface:#fff;--fg:#14202e;--muted:#5e6e80;--line:#e3e9f1;--brand:#0e6ba8;--brand-ink:#0a3a52;--font:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e151e;--surface:#16202c;--fg:#e8eef5;--muted:#9bacbe;--line:#243242;--brand:#3fa0dc;--brand-ink:#9bd2f2;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e151e;--surface:#16202c;--fg:#e8eef5;--muted:#9bacbe;--line:#243242;--brand:#3fa0dc;--brand-ink:#9bd2f2;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7}
+.wrap{max-width:680px;margin:0 auto;padding-block:36px;padding-inline:16px}
+.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;background:color-mix(in srgb,var(--brand) 10%,transparent);padding:1px 6px;border-radius:5px;font-size:.92em}
+.eyebrow{color:var(--brand);font-weight:700;font-size:13px;letter-spacing:.06em}
+h1{font-size:30px;font-weight:800;margin:6px 0 10px;text-wrap:balance;line-height:1.2}
+.lede{font-size:17px;color:var(--muted);margin-bottom:22px}
+h2{font-size:21px;margin:30px 0 10px}
+p{margin:0 0 14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0}
+.cta{display:block;text-align:center;background:linear-gradient(135deg,var(--brand),var(--brand-ink));color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:16px;border-radius:12px;margin:24px 0}
+.fix{font-family:var(--mono);direction:ltr;background:#0f1b27;color:#d7e3ee;border-radius:8px;padding:10px 12px;font-size:12.5px;overflow-x:auto;word-break:break-all}
+footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:12px;text-align:center}
+a{color:var(--brand)}
+</style>
+</head>
+<body>
+<article class="wrap">
+  <div class="eyebrow">מדריך · הגנת מייל לעסקים</div>
+  <h1>למה המיילים של העסק שלך נופלים לספאם — ואיך לתקן</h1>
+  <p class="lede">שלחת ללקוח הצעת מחיר, אישור הזמנה או ניוזלטר — והם לא ראו אותו, כי הוא נחת בספאם. זה לא מקרי, ולרוב יש לזה שלוש סיבות מדויקות. הנה הן, ואיך מתקנים כל אחת.</p>
+
+  <a class="cta" href="./">בדוק חינם אם המייל שלך מוגן — 5 שניות ←</a>
+
+  <h2>סיבה 1: אין לך SPF</h2>
+  <p>SPF היא רשומה קטנה ב-DNS של הדומיין שקובעת <b>מי מורשה לשלוח מייל בשמך</b>. בלעדיה, ג'ימייל ואאוטלוק לא יכולים לוודא שהמייל באמת ממך — אז הם חושדים ושולחים לספאם. גרוע מכך: כל אחד בעולם יכול לשלוח מייל שנראה כאילו הוא מהעסק שלך.</p>
+  <div class="box">התיקון: להוסיף רשומת <span class="mono">TXT</span> בשם <span class="mono">@</span>, למשל:
+    <div class="fix">v=spf1 include:_spf.google.com ~all</div>
+    (הערך המדויק תלוי בספק המייל שלך — ג'ימייל, אאוטלוק וכו'.)</div>
+
+  <h2>סיבה 2: אין לך DMARC (או שהוא לא אוכף)</h2>
+  <p>DMARC היא שכבת ההגנה שמוודאת שמייל "ממך" הוא באמת ממך, ומנחה את שרתי הדואר מה לעשות עם מייל מזויף. מאז 2024 <b>ג'ימייל ו-Yahoo דורשים</b> DMARC משולחים עסקיים — בלעדיו המסירוּת שלך נפגעת.</p>
+  <div class="box">התיקון: רשומת <span class="mono">TXT</span> בשם <span class="mono">_dmarc</span>:
+    <div class="fix">v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com</div>
+    מתחילים ב-<span class="mono">p=none</span> לניטור, ואז מעלים ל-<span class="mono">p=quarantine</span> לאכיפה.</div>
+
+  <h2>סיבה 3: תוכן המייל עצמו</h2>
+  <p>גם עם SPF ו-DMARC תקינים, מיילים נופלים לספאם אם יש בהם מילים "ספאמיות" מוגזמות ("חינם!!!", הרבה סימני קריאה), קישורים מקוצרים חשודים, או יחס טקסט-לתמונה גרוע. כתוב טבעי, הימנע מהגזמות, ותן אפשרות הסרה מרשימת התפוצה.</p>
+
+  <h2>איך יודעים מה חסר אצלי?</h2>
+  <p>במקום לנחש — אפשר לבדוק את הדומיין שלך בחינם. הכלי בודק את רשומות ה-SPF וה-DMARC הציבוריות שלך תוך 5 שניות, נותן ציון, ומראה בדיוק מה חסר ואת התיקון המדויק להעתקה.</p>
+
+  <a class="cta" href="./">לבדיקה חינמית של הדומיין שלך ←</a>
+
+  <footer>מדריך זה נכתב כדי לעזור לבעלי עסקים · הבדיקה מתבצעת על מידע ציבורי בלבד</footer>
+</article>
+</body>
+</html>
