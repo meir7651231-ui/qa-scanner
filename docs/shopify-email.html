@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>הגנת מייל לחנות Shopify</title>
+<meta name="description" content="חנות Shopify? המיילים שלך (אישורי הזמנה, קמפיינים) עלולים ליפול לספאם בלי SPF ו-DMARC. איך בודקים ומתקנים — מדריך בעברית + בדיקה חינמית.">
+<link rel="canonical" href="https://meir7651231-ui.github.io/qa-scanner/shopify-email.html">
+<meta property="og:title" content="הגנת מייל לחנות Shopify — SPF ו-DMARC"><meta property="og:type" content="article">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"האם Shopify מגדיר לי SPF ו-DMARC אוטומטית?","acceptedAnswer":{"@type":"Answer","text":"לא. Shopify מארח את החנות, אבל רשומות SPF ו-DMARC של הדומיין הן באחריותך ומוגדרות ב-DNS אצל ספק הדומיין."}},{"@type":"Question","name":"למה אישורי ההזמנה שלי נופלים לספאם?","acceptedAnswer":{"@type":"Answer","text":"לרוב בגלל שחסרות רשומות SPF ו-DMARC, או שאפליקציית הדיוור (כמו Klaviyo) שולחת בלי דומיין שליחה מאומת."}}]}</script>
+<style>
+:root{--bg:#f4f6fa;--surface:#fff;--fg:#14202e;--muted:#5e6e80;--line:#e3e9f1;--brand:#0e6ba8;--brand-ink:#0a3a52;--font:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--mono:"SFMono-Regular",Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e151e;--surface:#16202c;--fg:#e8eef5;--muted:#9bacbe;--line:#243242;--brand:#3fa0dc;--brand-ink:#9bd2f2;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e151e;--surface:#16202c;--fg:#e8eef5;--muted:#9bacbe;--line:#243242;--brand:#3fa0dc;--brand-ink:#9bd2f2;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7}
+.wrap{max-width:680px;margin:0 auto;padding-block:36px;padding-inline:16px}
+.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;background:color-mix(in srgb,var(--brand) 10%,transparent);padding:1px 6px;border-radius:5px;font-size:.92em}
+.eyebrow{color:var(--brand);font-weight:700;font-size:13px;letter-spacing:.06em}
+h1{font-size:29px;font-weight:800;margin:6px 0 10px;text-wrap:balance;line-height:1.2}
+.lede{font-size:17px;color:var(--muted);margin-bottom:22px}h2{font-size:20px;margin:28px 0 10px}p{margin:0 0 14px}
+.fix{font-family:var(--mono);direction:ltr;background:#0f1b27;color:#d7e3ee;border-radius:8px;padding:10px 12px;font-size:12.5px;overflow-x:auto;word-break:break-all;margin:10px 0}
+.cta{display:block;text-align:center;background:linear-gradient(135deg,var(--brand),var(--brand-ink));color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:16px;border-radius:12px;margin:24px 0}
+footer{margin-top:34px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:12px;text-align:center}a{color:var(--brand)}
+</style>
+</head>
+<body>
+<article class="wrap">
+  <div class="eyebrow">מדריך · Shopify</div>
+  <h1>הגנת מייל לחנות Shopify — SPF ו-DMARC</h1>
+  <p class="lede">בעלי חנויות Shopify רבים לא יודעים: Shopify לא מגדיר לך את הגנת המייל. אישורי ההזמנה והקמפיינים שלך עלולים ליפול לספאם — וזו מכירה שנעלמת בשקט.</p>
+  <a class="cta" href="./">בדוק את הגנת המייל של החנות שלך — חינם ←</a>
+  <h2>רגע, Shopify לא מטפל בזה?</h2>
+  <p>לא. Shopify מארח את החנות ואת העיצוב — אבל רשומות <b>SPF</b> ו-<b>DMARC</b> שייכות ל<b>דומיין</b> שלך ומוגדרות ב-DNS אצל ספק הדומיין (היכן שקנית אותו). זו נקודה שכמעט כל חנות מפספסת, כי היא "מחוץ" ל-Shopify.</p>
+  <h2>למה דווקא אצל חנויות זה קריטי</h2>
+  <p>חנות שולחת הרבה מיילים אוטומטיים: אישור הזמנה, עדכון משלוח, עגלה נטושה, קמפיינים (Klaviyo/Mailchimp). בלי SPF/DMARC — חלקם נוחת בספאם. אתה משלם על דיוור ופרסום, וחלק מהתוצאה הולך לפח בלי שתדע.</p>
+  <h2>איך בודקים ומתקנים</h2>
+  <p>הדרך המהירה: הקלד את דומיין החנות בכלי הבדיקה החינמי. הוא יראה לך אם חסר SPF/DMARC וייתן את הרשומות המדויקות. מוסיפים אותן ב-DNS:</p>
+  <div class="fix">SPF  (TXT @):      v=spf1 include:_spf.google.com ~all
+DMARC (TXT _dmarc): v=DMARC1; p=quarantine; rua=mailto:dmarc@yourstore.com</div>
+  <p>אם אתה משתמש ב-Klaviyo/Mailchimp — חשוב גם לאמת שם "דומיין שליחה ייעודי" (sending domain) לפי ההוראות שלהם.</p>
+  <a class="cta" href="./">בדוק עכשיו את החנות שלך — חינם ←</a>
+  <footer>מדריך לבעלי חנויות · <a href="./email-spam.html">למה מיילים נופלים לספאם</a> · <a href="./spf-check.html">בדיקת SPF</a></footer>
+</article>
+</body>
+</html>
