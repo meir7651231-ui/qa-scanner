@@ -69,6 +69,11 @@ button:disabled{opacity:.6;cursor:wait}
 .cta{background:linear-gradient(135deg,var(--brand),var(--brand-ink));color:#fff;border-radius:16px;padding:22px;text-align:center;margin-top:16px}
 .cta h3{margin:0 0 6px;font-size:19px} .cta p{margin:0 0 14px;opacity:.92;font-size:14px}
 .cta a{display:inline-block;background:#fff;color:var(--brand-ink);font-weight:800;text-decoration:none;padding:12px 24px;border-radius:10px}
+.share{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px;text-align:center}
+.share b{font-size:14.5px} .share p{margin:4px 0 12px;font-size:13px;color:var(--muted)}
+.share .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.share a,.share button{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;text-decoration:none;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;color:#fff}
+.share .wa{background:#25d366} .share .fb{background:#1877f2} .share .lk{background:var(--brand)}
 .content{margin-top:40px;border-top:1px solid var(--line);padding-top:26px}
 .content h2{font-size:20px;margin:22px 0 8px}
 .content h3{font-size:15px;margin:16px 0 4px}
@@ -112,6 +117,26 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 <script>
 const $ = s => document.querySelector(s);
 const out = $('#out');
+const SITE = 'https://meir7651231-ui.github.io/qa-scanner/';
+
+function shareBlock(score){
+  const msg = score<75
+    ? `בדקתי אם המיילים של העסק שלי מוגנים מזיוף וספאם — התוצאה הפתיעה אותי. בדיקה חינמית ב-5 שניות, שווה שתבדקו גם:`
+    : `בדקתי אם המיילים של העסק שלי מוגנים — בדיקה חינמית ב-5 שניות. שווה שתבדקו גם את שלכם:`;
+  const txt = encodeURIComponent(msg + ' ' + SITE);
+  const url = encodeURIComponent(SITE);
+  return `<div class="share"><b>שתפו — שעסק אחד פחות ייפול לספאם</b>
+    <p>מכירים בעל עסק? שלחו לו את הבדיקה החינמית:</p>
+    <div class="row">
+      <a class="wa" href="https://wa.me/?text=${txt}" target="_blank" rel="noopener">וואטסאפ</a>
+      <a class="fb" href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" rel="noopener">פייסבוק</a>
+      <button class="lk" type="button" onclick="cpLink(this)">העתק קישור</button>
+    </div></div>`;
+}
+window.cpLink = (btn)=>{
+  navigator.clipboard?.writeText(SITE).then(()=>{btn.textContent='הקישור הועתק ✓';setTimeout(()=>btn.textContent='העתק קישור',1600);})
+    .catch(()=>{btn.textContent=SITE;});
+};
 
 async function dns(name, type){
   try{
@@ -189,6 +214,7 @@ async function check(domain){
   } else {
     html += card('ok','🎉','הכל מוגן','מצוין','הגנת המייל שלך מוגדרת כמו שצריך. כל הכבוד.');
   }
+  html += shareBlock(score);
   out.innerHTML = html;
 }
 
