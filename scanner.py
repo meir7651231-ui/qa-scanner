@@ -12,7 +12,7 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-HEADERS = {"User-Agent": "QA-PreLaunch-Checker/1.0 (site owner audit)"}
+HEADERS = {"User-Agent": "QA-PreLaunch-Checker/1.0"}
 
 # ביטויי מחיר נפוצים בעברית ובאנגלית: ₪ 1,299.00 / 49.90 ש"ח / $19.99
 PRICE_RE = re.compile(r"(?:₪|\$|€)\s?(\d[\d,]*\.?\d*)|(\d[\d,]*\.?\d*)\s?(?:ש[\"״]?ח|שקל)")

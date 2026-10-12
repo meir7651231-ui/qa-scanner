@@ -13,7 +13,7 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
-HEADERS = {"User-Agent": "QA-PreLaunch-Checker/3.0 (site owner audit)"}
+HEADERS = {"User-Agent": "QA-PreLaunch-Checker/3.0"}
 TEMPLATE_RE = re.compile(r"\{\{.+?\}\}")
 
 

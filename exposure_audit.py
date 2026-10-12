@@ -1,5 +1,7 @@
 """דוח חשיפה לעסק - 100+ בדיקות על אתר, מקובצות לפי תחום.
-קורא עמודים ונתונים ציבוריים בלבד (HTML, כותרות HTTP, DNS). לא מבצע שום פעולה.
+ברירת-מחדל: קורא עמודים ונתונים ציבוריים בלבד (HTML, כותרות HTTP, DNS). לא מבצע שום פעולה.
+בדיקת קבצים רגישים ופאנלי-ניהול (/.env, /.git/config, /wp-admin...) רצה רק עם --authorized,
+כלומר רק על אתר שלך או של לקוח שנתן הסכמה בכתב.
 """
 import glob
 import re
@@ -71,8 +73,9 @@ def render_html(url, wait_ms=2500):
 
 
 class Audit:
-    def __init__(self, url, render=True):
+    def __init__(self, url, render=True, authorized=False):
         self.url = url if url.startswith("http") else "https://" + url
+        self.authorized = authorized          # בדיקות-נתיבים רגישים רק בהסכמת בעל-האתר
         self.host = urlparse(self.url).hostname
         self.dom = re.sub(r"^www\.", "", self.host)
         self.F = []  # (id, group, name, passed, severity, note)
@@ -202,6 +205,12 @@ class Audit:
             self.add(73, g, "תעודת SSL בתוקף (>14 יום)", days > 14, "גבוה", f"{days} ימים")
         except Exception:
             self.add(73, g, "תעודת SSL", True, "נמוך", "לא נבדק דרך פרוקסי")
+        if not self.authorized:
+            # בלי הסכמת בעל-האתר לא פונים לנתיבים רגישים או לפאנלי-ניהול
+            self.add(74, g, "קבצים רגישים חשופים", True, "נמוך", "לא נבדק - דורש --authorized")
+            for i, p in enumerate(["/admin", "/wp-admin", "/phpmyadmin"], start=75):
+                self.add(i, g, f"פאנל {p}", True, "נמוך", "לא נבדק - דורש --authorized")
+            return
         # exposed files (read-only, status only)
         exposed = []
         for p in ["/.git/config", "/.env", "/.env.backup", "/wp-config.php.bak", "/.DS_Store"]:
@@ -458,10 +467,14 @@ def report(url, findings):
 
 
 if __name__ == "__main__":
-    u = sys.argv[1] if len(sys.argv) > 1 else "https://www.u-boutique.com/"
+    args = [x for x in sys.argv[1:] if not x.startswith("--")]
+    if not args:
+        sys.exit("שימוש: python exposure_audit.py <url> [--no-render] [--authorized]")
+    u = args[0]
     no_render = "--no-render" in sys.argv
+    authorized = "--authorized" in sys.argv
     print(f"בודק {u} ... (100+ בדיקות, עמודים ציבוריים בלבד)")
-    a = Audit(u, render=not no_render)
+    a = Audit(u, render=not no_render, authorized=authorized)
     mode = "דפדפן אמיתי (DOM מרונדר)" if a.rendered else "HTML גולמי (ללא JS)"
     print(f"מצב קריאה: {mode}")
     report(u, a.run())
