@@ -5,3 +5,7 @@ reports/
 # דוחות חשיפה על אתרים ספציפיים - לא לפרסם בריפו ציבורי
 *.pdf
 *_findings.json
+
+# >>> agent-police >>>
+.harness/
+# <<< agent-police <<<

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "node .agent-police/bin/agent-police.mjs hook cursor-prompt"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "node .agent-police/bin/agent-police.mjs hook cursor-shell"
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "node .agent-police/bin/agent-police.mjs hook cursor-read"
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "node .agent-police/bin/agent-police.mjs hook cursor-reply"
+      }
+    ],
+    "stop": [
+      {
+        "command": "node .agent-police/bin/agent-police.mjs hook cursor-stop",
+        "loop_limit": 3,
+        "timeout": 900
+      }
+    ]
+  }
+}
