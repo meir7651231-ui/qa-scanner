@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-label="qa-scanner: finds the expensive mistakes on a website before customers do">
+<defs>
+<radialGradient id="bg" cx="75%" cy="40%" r="80%"><stop offset="0" stop-color="#0f2a2a"/><stop offset=".6" stop-color="#081214"/><stop offset="1" stop-color="#05090a"/></radialGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ee6c5" stop-opacity="0"/><stop offset=".5" stop-color="#2ee6c5" stop-opacity=".35"/><stop offset="1" stop-color="#2ee6c5" stop-opacity="0"/></linearGradient>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity=".035"/></pattern>
+</defs>
+<style>
+@keyframes sweep{0%{transform:translateY(-40px)}100%{transform:translateY(330px)}}
+.beam{animation:sweep 4s linear infinite}
+@keyframes pop{0%,20%{opacity:0}28%,100%{opacity:1}}
+.p1{animation:pop 4s infinite}.p2{animation:pop 4s .6s infinite}.p3{animation:pop 4s 1.2s infinite}.p4{animation:pop 4s 1.8s infinite}
+text{font-family:'Segoe UI',Helvetica,Arial,sans-serif}
+.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace}
+</style>
+<rect width="1280" height="520" fill="url(#bg)"/>
+<rect width="1280" height="520" fill="url(#grid)"/>
+
+<!-- left: title -->
+<g transform="translate(72,0)">
+  <rect x="0" y="118" width="148" height="30" rx="15" fill="#2ee6c5" fill-opacity=".12" stroke="#2ee6c5" stroke-opacity=".5"/>
+  <text x="74" y="138" text-anchor="middle" font-size="14" font-weight="700" fill="#2ee6c5" letter-spacing="2">SITE QA</text>
+  <text x="0" y="214" font-size="72" font-weight="800" fill="#f2f7f7">qa-scanner</text>
+  <text x="0" y="266" font-size="27" font-weight="600" fill="#cfe3e1">Finds the expensive mistakes on a website</text>
+  <text x="0" y="302" font-size="27" font-weight="600" fill="#cfe3e1">— before your customers do.</text>
+  <text x="0" y="356" font-size="18" fill="#7f9b98">Zero prices · leaked template code · broken links &amp; images</text>
+  <text x="0" y="384" font-size="18" fill="#7f9b98">SEO gaps · email spoofing (SPF / DMARC) · outdated jQuery</text>
+  <text x="0" y="436" font-size="16" fill="#5f7a77" class="mono">reads public pages only · never clicks, buys or logs in</text>
+</g>
+
+<!-- right: mock storefront being scanned -->
+<g transform="translate(720,70)">
+  <rect width="490" height="380" rx="14" fill="#0d1a1c" stroke="#24403f"/>
+  <rect width="490" height="40" rx="14" fill="#132527"/>
+  <rect y="26" width="490" height="14" fill="#132527"/>
+  <circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
+  <rect x="90" y="11" width="300" height="18" rx="9" fill="#0a1415"/>
+  <text x="104" y="25" font-size="12" fill="#6d8a87" class="mono">https://your-store.example/</text>
+
+  <!-- product cards -->
+  <g font-size="13">
+    <g transform="translate(24,62)">
+      <rect width="138" height="140" rx="10" fill="#132527" stroke="#24403f"/>
+      <rect x="12" y="12" width="114" height="68" rx="6" fill="#1b3335"/>
+      <text x="12" y="104" fill="#cfe3e1">Linen shirt</text>
+      <text x="12" y="126" fill="#ff6b6b" font-weight="700" class="mono">$0.00</text>
+    </g>
+    <g transform="translate(176,62)">
+      <rect width="138" height="140" rx="10" fill="#132527" stroke="#24403f"/>
+      <rect x="12" y="12" width="114" height="68" rx="6" fill="#1b3335"/>
+      <text x="12" y="104" fill="#ffb84d" class="mono" font-size="12">{{ product.title }}</text>
+      <text x="12" y="126" fill="#cfe3e1" class="mono">$49.90</text>
+    </g>
+    <g transform="translate(328,62)">
+      <rect width="138" height="140" rx="10" fill="#132527" stroke="#24403f"/>
+      <rect x="12" y="12" width="114" height="68" rx="6" fill="#1b3335" stroke="#ff6b6b" stroke-dasharray="4 4"/>
+      <text x="69" y="52" text-anchor="middle" fill="#ff6b6b" font-size="20">✕</text>
+      <text x="12" y="104" fill="#cfe3e1">Wool socks</text>
+      <text x="12" y="126" fill="#cfe3e1" class="mono">$14.00</text>
+    </g>
+  </g>
+
+  <!-- scan beam -->
+  <g class="beam"><rect x="0" y="40" width="490" height="60" fill="url(#beam)"/><rect x="0" y="70" width="490" height="2" fill="#2ee6c5" filter="url(#glow)"/></g>
+
+  <!-- findings -->
+  <g font-size="14" class="mono">
+    <g class="p1"><rect x="24" y="222" width="442" height="30" rx="7" fill="#ff6b6b" fill-opacity=".12"/><text x="38" y="242" fill="#ff8a8a">HIGH  zero price on a product</text></g>
+    <g class="p2"><rect x="24" y="258" width="442" height="30" rx="7" fill="#ffb84d" fill-opacity=".12"/><text x="38" y="278" fill="#ffc46e">HIGH  template code visible to buyers</text></g>
+    <g class="p3"><rect x="24" y="294" width="442" height="30" rx="7" fill="#ffb84d" fill-opacity=".10"/><text x="38" y="314" fill="#ffc46e">MED   broken image · 404 link</text></g>
+    <g class="p4"><rect x="24" y="330" width="442" height="30" rx="7" fill="#2ee6c5" fill-opacity=".10"/><text x="38" y="350" fill="#6ff0d8">→ reports/_SUMMARY.md</text></g>
+  </g>
+</g>
+</svg>
