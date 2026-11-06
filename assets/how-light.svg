@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-label="How qa-scanner works: sites.txt, read public pages, run checks, reports folder">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0b8f79"/></marker></defs>
+<style>text{font-family:'Segoe UI',Helvetica,Arial,sans-serif}.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace}</style>
+<rect width="1280" height="300" rx="16" fill="#f6f8f8"/>
+<g font-size="15">
+  <g transform="translate(40,60)">
+    <rect width="250" height="180" rx="14" fill="#ffffff" stroke="#d3dfde"/>
+    <text x="22" y="40" font-size="13" font-weight="700" fill="#0b8f79" letter-spacing="1.5">1 · LIST</text>
+    <text x="22" y="76" font-size="22" font-weight="700" fill="#0e1b1c" class="mono">sites.txt</text>
+    <text x="22" y="112" fill="#4a6563">one site per line</text>
+    <text x="22" y="136" fill="#4a6563"># lines are comments</text>
+  </g>
+  <g transform="translate(350,60)">
+    <rect width="250" height="180" rx="14" fill="#ffffff" stroke="#d3dfde"/>
+    <text x="22" y="40" font-size="13" font-weight="700" fill="#0b8f79" letter-spacing="1.5">2 · READ</text>
+    <text x="22" y="76" font-size="22" font-weight="700" fill="#0e1b1c">public pages only</text>
+    <text x="22" y="112" fill="#4a6563">HTML · product data</text>
+    <text x="22" y="136" fill="#4a6563">HTTP headers · DNS</text>
+    <text x="22" y="160" fill="#4a6563">no clicks, no orders</text>
+  </g>
+  <g transform="translate(660,60)">
+    <rect width="250" height="180" rx="14" fill="#ffffff" stroke="#d3dfde"/>
+    <text x="22" y="40" font-size="13" font-weight="700" fill="#0b8f79" letter-spacing="1.5">3 · CHECK</text>
+    <text x="22" y="76" font-size="22" font-weight="700" fill="#0e1b1c">prices &amp; content</text>
+    <text x="22" y="112" fill="#4a6563">zero / wrong prices</text>
+    <text x="22" y="136" fill="#4a6563">leaked template code</text>
+    <text x="22" y="160" fill="#4a6563">links · images · SEO · email</text>
+  </g>
+  <g transform="translate(970,60)">
+    <rect width="270" height="180" rx="14" fill="#ffffff" stroke="#0b8f79" stroke-opacity=".6"/>
+    <text x="22" y="40" font-size="13" font-weight="700" fill="#0b8f79" letter-spacing="1.5">4 · REPORT</text>
+    <text x="22" y="76" font-size="22" font-weight="700" fill="#0e1b1c" class="mono">reports/</text>
+    <text x="22" y="112" fill="#4a6563">per-site report</text>
+    <text x="22" y="136" fill="#4a6563">summary, worst first</text>
+    <text x="22" y="160" fill="#4a6563">verify by eye, then act</text>
+  </g>
+</g>
+<g stroke="#0b8f79" stroke-width="2.5" marker-end="url(#ar)">
+  <line x1="296" y1="150" x2="342" y2="150"/><line x1="606" y1="150" x2="652" y2="150"/><line x1="916" y1="150" x2="962" y2="150"/>
+</g>
+</svg>

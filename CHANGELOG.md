@@ -1,27 +1,56 @@
-# Changelog / יומן שינויים
+# Changelog
 
-לפי אבני דרך, מתוך היסטוריית ה־git. אין גרסאות מתויגות; התאריך הוא המזהה. · By milestone, from the git history. There are no tagged releases; the date is the identifier.
+All notable changes to this project are documented here.
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The project has no tagged
+releases, so each milestone is identified by its date. Reconstructed from the git history.
 
-## 2026-11-06 — הפרויקט קפוא · frozen
-- README דו־לשוני (עברית + אנגלית) עם מתג שפה, תגיות, ניווט, "מה זה לא עושה", מספרים מדודים ושאלות נפוצות.
-- `assets/`: ‏hero, how, before/after, catches, numbers, install (SVG), ‏`demo.gif` (הרצה אמיתית על חנות מקומית), צילום דוח לדוגמה.
-- `examples/`: חנות הדגמה מקומית עם באגים מכוונים, `demo-sites.txt`, ‏`sample-report.html` (נתונים מומצאים).
-- שמות ודומיינים אמיתיים הוחלפו בדוגמאות (`*.example`) ב־`sites.txt`, ברירת המחדל של `exposure_audit.py`, ‏`docs/index.html` והמדריך.
-- סידור השורש (`git mv` בלבד): `scanner.py`, ‏`scanner2.py` → `archive/` · ‏`README_AUTO.md` → `guides/auto-audit.md` · ‏`report.html` → `examples/sample-report.html`.
-- `CHANGELOG.md`, ‏`SECURITY.md`. אין שינוי בלוגיקה.
+כל השינויים המשמעותיים בפרויקט. המבנה לפי Keep a Changelog; אין גרסאות מתויגות, ולכן כל אבן דרך מזוהה בתאריך.
 
-## 2026-10-02 — אתר `docs/` (GitHub Pages)
-- דף בודק הגנת מייל (mailcheck) עם תיקון מדויק שנוצר אוטומטית ומנגנון שיתוף.
-- דפי מידע: SPF, ‏DMARC, ספאם, Shopify; ‏`sitemap.xml`, ‏`robots.txt`, ‏`llms.txt`.
-- דף חבילת פרומפטים ודפי מידע נלווים.
+## [Unreleased]
 
-## 2026-10-01 — דוח חשיפה · exposure report
-- `exposure_audit.py`: ‏106 בדיקות ב־7 תחומים, ואחר כך 116; רינדור DOM בדפדפן אמיתי לבדיקות שתלויות ב־JS.
-- דוח HTML מעוצב ללקוח (`make_report.py`) ו־`auto_audit.py`: ‏PDF לכל אתר + סיכום מדורג.
-- תיקוני false positives: בדיקת קישורים שבורים (נתיבי מערכת של Shopify, ‏Cloudflare, ‏mailto/tel), תוכן מעורב.
-- דוחות לאתרים ספציפיים מוחרגים מהריפו (`.gitignore`).
+Nothing — the project is frozen. See [ROADMAP.md](ROADMAP.md). · אין — הפרויקט קפוא.
 
-## 2026-10-01 — סורק האיכות · the QA scanner
-- `scanner.py` (HTML) → `scanner2.py` (דפדפן אמיתי) → `scanner3.py` (נתוני מוצר רשמיים, "מקור האמת").
-- `run_batch.py` + `sites.txt` + workflow ‏`qa-scan` ב־GitHub Actions (רץ על push ל־main ובהפעלה ידנית).
-- תיקוני false positives: מחירים נקראים רק מאלמנטי מחיר ייעודיים; דילוג על כרטיסים שאינם מוצר.
+## [2026-11-06] — Frozen · קפוא
+
+### Added
+- Bilingual README (Hebrew `README.md`, English `README.en.md`) with a language switch, badges, anchor navigation, "Try it now", a 60-second quick start, "What it does not do", measured numbers, demo and FAQ.
+- `assets/`: hero, how, before/after, catches, numbers and install SVGs, each in dark and light (`<picture>`); `demo.gif` (a real run on the local demo store); `sample-report.png`.
+- `examples/`: a local demo store with planted bugs, `demo-sites.txt`, `sample-report.html` (invented data).
+- `guides/ARCHITECTURE.md`, `guides/reading-the-report.md`.
+- `CONTRIBUTING.md`, `ROADMAP.md`, `SECURITY.md`, `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`.
+
+### Changed
+- Repository root tidied with `git mv` only: `scanner.py`, `scanner2.py` → `archive/`; `README_AUTO.md` → `guides/auto-audit.md`; `report.html` → `examples/sample-report.html`.
+- `requirements.txt` now lists every dependency by feature (`requests`, `beautifulsoup4`, `lxml`, `playwright`). No script or workflow reads it.
+- This changelog moved to the Keep a Changelog format.
+
+### Removed
+- Real site names and domains from the files at HEAD: `sites.txt`, the `exposure_audit.py` default URL, the `docs/index.html` prefilled domain, and the guide's example now use `*.example`. The git history still contains the old files.
+
+## [2026-10-02] — `docs/` site (GitHub Pages)
+
+### Added
+- Email-protection checker page (mailcheck), with an auto-generated exact fix and share buttons.
+- Guide pages: SPF, DMARC, spam, Shopify email; `sitemap.xml`, `robots.txt`, `llms.txt`.
+- Prompt-pack page and related guide pages.
+
+## [2026-10-01] — Exposure report
+
+### Added
+- `exposure_audit.py`: 106 checks in 7 areas, later 116; DOM rendering in a real browser for JavaScript-dependent checks.
+- Client-ready HTML report (`make_report.py`) and `auto_audit.py`: a PDF per site plus a ranked summary.
+
+### Fixed
+- False positives in the broken-link check (Shopify system paths, Cloudflare `/cdn-cgi`, `mailto:`/`tel:`; 404/410 only) and in the mixed-content check.
+
+### Security
+- Generated per-site reports are ignored in `.gitignore`, to keep third-party audits out of the public repository.
+
+## [2026-10-01] — QA scanner
+
+### Added
+- `scanner.py` (HTML crawl) → `scanner2.py` (real browser) → `scanner3.py` (official product data, the "source of truth" engine).
+- `run_batch.py`, `sites.txt`, and the `qa-scan` GitHub Actions workflow (on push to `main` and on manual run).
+
+### Fixed
+- Prices are read only from dedicated price elements (no more `$0.00` false positives); non-product cards (wishlist/login widgets) are skipped.

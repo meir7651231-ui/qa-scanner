@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-label="qa-scanner: finds the expensive mistakes on a website before customers do. Real scan of the demo store: 6 high, 1 medium, 1 low">
+<defs>
+<radialGradient id="bg" cx="75%" cy="40%" r="80%"><stop offset="0" stop-color="#e3f3ef"/><stop offset=".6" stop-color="#f6f8f8"/><stop offset="1" stop-color="#ffffff"/></radialGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b8f79" stop-opacity="0"/><stop offset=".5" stop-color="#0b8f79" stop-opacity=".35"/><stop offset="1" stop-color="#0b8f79" stop-opacity="0"/></linearGradient>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#000" stroke-opacity=".04"/></pattern>
+</defs>
+<style>
+@keyframes pop{from{opacity:0}to{opacity:1}}
+.p1{animation:pop .6s .3s both}.p2{animation:pop .6s 1s both}.p3{animation:pop .6s 1.7s both}.p4{animation:pop .6s 2.4s both}
+text{font-family:'Segoe UI',Helvetica,Arial,sans-serif}
+.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace}
+</style>
+<rect width="1280" height="520" fill="url(#bg)"/>
+<rect width="1280" height="520" fill="url(#grid)"/>
+
+<!-- left: title -->
+<g transform="translate(72,0)">
+  <rect x="0" y="118" width="148" height="30" rx="15" fill="#0b8f79" fill-opacity=".12" stroke="#0b8f79" stroke-opacity=".5"/>
+  <text x="74" y="138" text-anchor="middle" font-size="14" font-weight="700" fill="#0b8f79" letter-spacing="2">SITE QA</text>
+  <text x="0" y="214" font-size="72" font-weight="800" fill="#0e1b1c">qa-scanner</text>
+  <text x="0" y="266" font-size="27" font-weight="600" fill="#23393a">Finds the expensive mistakes on a website</text>
+  <text x="0" y="302" font-size="27" font-weight="600" fill="#23393a">— before your customers do.</text>
+  <text x="0" y="356" font-size="18" fill="#56706e">Zero prices · leaked template code · broken links &amp; images</text>
+  <text x="0" y="384" font-size="18" fill="#56706e">SEO gaps · email spoofing (SPF / DMARC) · outdated jQuery</text>
+  <text x="0" y="436" font-size="16" fill="#647c7a" class="mono">reads public pages only · never clicks, buys or logs in</text>
+</g>
+
+<!-- right: the real result of scanner3.py on examples/demo-store -->
+<g transform="translate(700,52)">
+  <rect width="520" height="416" rx="14" fill="#ffffff" stroke="#d3dfde"/>
+  <rect width="520" height="40" rx="14" fill="#eef3f3"/>
+  <rect y="26" width="520" height="14" fill="#eef3f3"/>
+  <circle cx="22" cy="20" r="6" fill="#ff5f57"/><circle cx="42" cy="20" r="6" fill="#febc2e"/><circle cx="62" cy="20" r="6" fill="#28c840"/>
+  <text x="90" y="25" font-size="13" fill="#5f7876" class="mono">$ python scanner3.py http://127.0.0.1:8000/</text>
+  <g font-size="13" class="mono">
+    <text x="24" y="74" fill="#4a6563">platform: shopify · official products read: 6</text>
+    <text x="24" y="98" fill="#0e1b1c" font-weight="700">high-severity issues: 6</text>
+    <g class="p1">
+      <rect x="18" y="114" width="484" height="28" rx="6" fill="#d32f2f" fill-opacity=".12"/><text x="30" y="133" fill="#c62828">HIGH  template code shown: {{ product.title }}</text>
+      <rect x="18" y="146" width="484" height="28" rx="6" fill="#d32f2f" fill-opacity=".12"/><text x="30" y="165" fill="#c62828">HIGH  link with template code: /collections/{{ … }}</text>
+    </g>
+    <g class="p2">
+      <rect x="18" y="178" width="484" height="28" rx="6" fill="#d32f2f" fill-opacity=".12"/><text x="30" y="197" fill="#c62828">HIGH  zero price: "Linen shirt" = 0</text>
+      <rect x="18" y="210" width="484" height="28" rx="6" fill="#d32f2f" fill-opacity=".12"/><text x="30" y="229" fill="#c62828">HIGH  extreme discount: "Leather bag" 200 → 9</text>
+      <rect x="18" y="242" width="484" height="28" rx="6" fill="#d32f2f" fill-opacity=".12"/><text x="30" y="261" fill="#c62828">HIGH  no price: "Gift card"</text>
+    </g>
+    <g class="p3">
+      <rect x="18" y="274" width="484" height="28" rx="6" fill="#b26a00" fill-opacity=".12"/><text x="30" y="293" fill="#a15c00">MED   suspiciously low price: "Wool socks" = 0.5</text>
+      <rect x="18" y="306" width="484" height="28" rx="6" fill="#6b8280" fill-opacity=".10"/><text x="30" y="325" fill="#4a6563">LOW   no meta description</text>
+    </g>
+    <g class="p4"><text x="24" y="368" fill="#0b7a67">→ 0.13 s · reports/_SUMMARY.md</text>
+    <text x="24" y="396" fill="#647c7a" font-size="12">real output, translated · local demo store, bugs planted on purpose</text></g>
+  </g>
+</g>
+</svg>

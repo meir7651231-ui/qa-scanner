@@ -49,7 +49,7 @@ text{font-family:'Segoe UI',Helvetica,Arial,sans-serif}
       <rect x="18" y="274" width="484" height="28" rx="6" fill="#ffb84d" fill-opacity=".12"/><text x="30" y="293" fill="#ffc46e">MED   suspiciously low price: "Wool socks" = 0.5</text>
       <rect x="18" y="306" width="484" height="28" rx="6" fill="#8aa3a0" fill-opacity=".10"/><text x="30" y="325" fill="#9db6b3">LOW   no meta description</text>
     </g>
-    <g class="p4"><text x="24" y="368" fill="#6ff0d8">→ 0.3 s · reports/_SUMMARY.md</text>
+    <g class="p4"><text x="24" y="368" fill="#6ff0d8">→ 0.13 s · reports/_SUMMARY.md</text>
     <text x="24" y="396" fill="#5f7a77" font-size="12">real output, translated · local demo store, bugs planted on purpose</text></g>
   </g>
 </g>

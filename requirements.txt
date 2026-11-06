@@ -1,1 +1,14 @@
+# qa-scanner — dependencies by feature. · תלויות לפי יכולת.
+# Nothing installs this file automatically: CI runs `pip install requests` (see .github/workflows/scan.yml).
+# Install everything:  pip install -r requirements.txt
+
+# Quick scan — scanner3.py, run_batch.py · סריקה מהירה
+requests
+
+# Full exposure report — exposure_audit.py, archive/scanner.py · דוח חשיפה מלא
+beautifulsoup4
+lxml
+
+# Real browser + PDF — auto_audit.py, make_report.py, archive/scanner2.py (optional in exposure_audit.py)
+# After installing: python -m playwright install chromium
 playwright>=1.40
