@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="340" viewBox="0 0 1280 340" role="img" aria-label="Without qa-scanner a customer finds the zero price; with qa-scanner the scan finds it before launch">
+<style>text{font-family:'Segoe UI',Helvetica,Arial,sans-serif}.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace}</style>
+<defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff8a8a"/></marker><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2ee6c5"/></marker></defs>
+<rect width="1280" height="340" rx="16" fill="#081214"/>
+<g transform="translate(40,30)">
+  <rect width="580" height="280" rx="14" fill="#1a0f11" stroke="#5a2a2e"/>
+  <text x="28" y="44" font-size="14" font-weight="700" fill="#ff8a8a" letter-spacing="1.5">WITHOUT</text>
+  <g font-size="16">
+    <rect x="28" y="70" width="150" height="72" rx="10" fill="#241417" stroke="#5a2a2e"/><text x="103" y="100" text-anchor="middle" fill="#f2e3e3">you publish</text><text x="103" y="124" text-anchor="middle" fill="#ff8a8a" class="mono">$0.00</text>
+    <rect x="214" y="70" width="150" height="72" rx="10" fill="#241417" stroke="#5a2a2e"/><text x="289" y="100" text-anchor="middle" fill="#f2e3e3">a customer</text><text x="289" y="124" text-anchor="middle" fill="#f2e3e3">finds it</text>
+    <rect x="400" y="70" width="150" height="72" rx="10" fill="#241417" stroke="#5a2a2e"/><text x="475" y="100" text-anchor="middle" fill="#f2e3e3">orders at 0,</text><text x="475" y="124" text-anchor="middle" fill="#f2e3e3">or complains</text>
+  </g>
+  <g stroke="#ff8a8a" stroke-width="2" marker-end="url(#a1)"><line x1="180" y1="106" x2="208" y2="106"/><line x1="366" y1="106" x2="394" y2="106"/></g>
+  <text x="28" y="196" font-size="17" fill="#d7b9b9">You hear about it last — after it cost money</text>
+  <text x="28" y="224" font-size="17" fill="#d7b9b9">or trust.</text>
+</g>
+<g transform="translate(660,30)">
+  <rect width="580" height="280" rx="14" fill="#0d1a1c" stroke="#2ee6c5" stroke-opacity=".6"/>
+  <text x="28" y="44" font-size="14" font-weight="700" fill="#2ee6c5" letter-spacing="1.5">WITH QA-SCANNER</text>
+  <g font-size="16">
+    <rect x="28" y="70" width="150" height="72" rx="10" fill="#132527" stroke="#24403f"/><text x="103" y="100" text-anchor="middle" fill="#f2f7f7">scan before</text><text x="103" y="124" text-anchor="middle" fill="#f2f7f7">launch</text>
+    <rect x="214" y="70" width="150" height="72" rx="10" fill="#132527" stroke="#24403f"/><text x="289" y="100" text-anchor="middle" fill="#ff8a8a" class="mono">HIGH</text><text x="289" y="124" text-anchor="middle" fill="#f2f7f7">zero price</text>
+    <rect x="400" y="70" width="150" height="72" rx="10" fill="#132527" stroke="#24403f"/><text x="475" y="100" text-anchor="middle" fill="#f2f7f7">you fix it,</text><text x="475" y="124" text-anchor="middle" fill="#f2f7f7">then publish</text>
+  </g>
+  <g stroke="#2ee6c5" stroke-width="2" marker-end="url(#a2)"><line x1="180" y1="106" x2="208" y2="106"/><line x1="366" y1="106" x2="394" y2="106"/></g>
+  <text x="28" y="196" font-size="17" fill="#cfe3e1">You hear about it first, in a report ranked</text>
+  <text x="28" y="224" font-size="17" fill="#cfe3e1">worst-first — and check it by eye.</text>
+</g>
+</svg>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Demo store for qa-scanner. Every bug on this page is planted on purpose.
+     Served locally only (python -m http.server). Uses a Shopify-style /products.json feed. -->
+<title>Demo Store — invented shop for the qa-scanner demo</title>
+<meta name="generator" content="shopify-style demo feed">
+</head>
+<body>
+<h1>Demo Store</h1>
+<div class="product"><h2>Linen shirt</h2><span class="price">$0.00</span></div>
+<div class="product"><h2>{{ product.title }}</h2><span class="price">$49.90</span></div>
+<div class="product"><h2>Wool socks</h2><span class="price">$0.50</span></div>
+<div class="product"><h2>Leather bag</h2><s>$200.00</s> <span class="price">$9.00</span></div>
+<div class="product"><h2>Gift card</h2><span class="price"></span></div>
+<a href="/collections/{{ collection.handle }}">All products</a>
+</body>
+</html>

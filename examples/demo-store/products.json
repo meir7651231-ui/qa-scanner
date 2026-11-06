@@ -1,0 +1,8 @@
+{"products": [
+  {"title": "Linen shirt", "handle": "linen-shirt", "variants": [{"title": "M", "price": "0.00", "compare_at_price": null, "available": true}]},
+  {"title": "Cotton tee", "handle": "cotton-tee", "variants": [{"title": "L", "price": "49.90", "compare_at_price": null, "available": true}]},
+  {"title": "Wool socks", "handle": "wool-socks", "variants": [{"title": "One size", "price": "0.50", "compare_at_price": null, "available": true}]},
+  {"title": "Leather bag", "handle": "leather-bag", "variants": [{"title": "Brown", "price": "9.00", "compare_at_price": "200.00", "available": true}]},
+  {"title": "Gift card", "handle": "gift-card", "variants": [{"title": "Default", "price": "", "compare_at_price": null, "available": true}]},
+  {"title": "Canvas tote", "handle": "canvas-tote", "variants": [{"title": "Natural", "price": "24.00", "compare_at_price": "30.00", "available": true}]}
+]}

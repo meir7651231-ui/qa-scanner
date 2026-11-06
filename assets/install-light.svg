@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-label="Install: pip install requests, then python run_batch.py sites.txt">
+<style>text{font-family:'Segoe UI',Helvetica,Arial,sans-serif}.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace}</style>
+<rect width="1280" height="300" rx="16" fill="#ffffff" stroke="#d3dfde"/>
+<circle cx="30" cy="26" r="6" fill="#ff5f57"/><circle cx="50" cy="26" r="6" fill="#febc2e"/><circle cx="70" cy="26" r="6" fill="#28c840"/>
+<text x="40" y="78" font-size="19" fill="#647c7a" class="mono"># quick scan</text>
+<text x="40" y="112" font-size="21" class="mono"><tspan fill="#0b8f79">$ </tspan><tspan fill="#0e1b1c">pip install requests</tspan></text>
+<text x="40" y="146" font-size="21" class="mono"><tspan fill="#0b8f79">$ </tspan><tspan fill="#0e1b1c">python run_batch.py sites.txt</tspan></text>
+<text x="40" y="198" font-size="19" fill="#647c7a" class="mono"># try it on the bundled demo store</text>
+<text x="40" y="232" font-size="21" class="mono"><tspan fill="#0b8f79">$ </tspan><tspan fill="#0e1b1c">python -m http.server 8000 -d examples/demo-store &amp;</tspan></text>
+<text x="40" y="266" font-size="21" class="mono"><tspan fill="#0b8f79">$ </tspan><tspan fill="#0e1b1c">python run_batch.py examples/demo-sites.txt</tspan></text>
+</svg>
