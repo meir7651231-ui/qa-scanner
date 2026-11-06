@@ -1,0 +1,8 @@
+{
+  "name": "qa-scanner",
+  "mandatory": [
+    "in_scope"
+  ],
+  "state_dir": ".harness",
+  "timeout_s": 900
+}
