@@ -458,7 +458,7 @@ def report(url, findings):
 
 
 if __name__ == "__main__":
-    u = sys.argv[1] if len(sys.argv) > 1 else "https://www.u-boutique.com/"
+    u = sys.argv[1] if len(sys.argv) > 1 else "https://your-store.example/"
     no_render = "--no-render" in sys.argv
     print(f"בודק {u} ... (100+ בדיקות, עמודים ציבוריים בלבד)")
     a = Audit(u, render=not no_render)

@@ -4,7 +4,8 @@
 
 ## 2026-11 — סידור הריפו · repo tidy-up
 - README דו־לשוני (עברית + אנגלית) עם מתג שפה, `assets/hero.svg`, `assets/how.svg`.
-- `CHANGELOG.md`, `SECURITY.md`. הפרויקט מסומן **קפוא**. אין שינוי בקוד.
+- `CHANGELOG.md`, `SECURITY.md`. הפרויקט מסומן **קפוא**.
+- `report.html`, `sites.txt`, ברירת המחדל ב־`exposure_audit.py` והדוגמאות ב־`README_AUTO.md` / `docs/index.html`: הוחלפו בדומיינים ונתונים לדוגמה (`*.example`). אין שינוי בלוגיקה.
 
 ## 2026-10-02 — אתר `docs/` (GitHub Pages)
 - דף בודק הגנת מייל (mailcheck), דפי מידע על SPF/DMARC וספאם, `llms.txt`, `robots.txt`, `sitemap.xml`.

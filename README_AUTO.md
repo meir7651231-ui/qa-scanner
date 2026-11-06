@@ -22,8 +22,8 @@ python -m playwright install chromium
 
 1. ערכו את `sites.txt` — דומיין אחד בכל שורה (שורה שמתחילה ב-# היא הערה):
    ```
-   karo.co.il
-   example-store.co.il
+   your-store.example
+   demo-shop.example
    ```
 2. הריצו:
    ```bash
